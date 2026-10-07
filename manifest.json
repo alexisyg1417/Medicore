@@ -1,0 +1,17 @@
+{
+    "name": "MediCore - Gestión Clínica",
+    "short_name": "MediCore",
+    "description": "Sistema de gestión clínica para facilitar la atención médica.",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#FFFFFF",
+    "theme_color": "#12283F",
+    "lang": "es-MX",
+    "categories": [
+        "medical",
+        "health",
+        "productivity"
+    ]
+}

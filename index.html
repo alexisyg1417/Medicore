@@ -1,36 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MediCore | Tecnología para una atención más sencilla</title>
+    <meta name="theme-color" content="#12283F">
 
+    <meta
+        name="description"
+        content="MediCore, sistema de gestión clínica para facilitar la atención médica."
+    >
+
+    <title>MediCore | Gestión clínica inteligente</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Icono del navegador -->
+    <link
+        rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231E7D3C'/%3E%3Ctext x='50' y='70' text-anchor='middle' font-size='70' fill='white'%3E%2B%3C/text%3E%3C/svg%3E"
+    >
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
-    <!-- ENCABEZADO -->
+    <!-- =========================
+         ENCABEZADO
+    ========================== -->
+
     <header class="header">
 
         <div class="container nav-container">
 
             <a href="#inicio" class="logo">
+
                 <span class="logo-icon">+</span>
+
                 <span>MediCore</span>
+
             </a>
 
-            <button class="menu-button" id="menuButton">
+
+            <!-- Botón menú móvil -->
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                aria-label="Abrir menú"
+            >
                 ☰
             </button>
 
+
+            <!-- Navegación -->
+
             <nav class="nav" id="navMenu">
+
                 <a href="#inicio">Inicio</a>
+
                 <a href="#enfoque">Mi enfoque</a>
+
                 <a href="#funciones">Funciones</a>
+
                 <a href="#innovacion">Innovación</a>
+
                 <a href="#proyecto">Proyecto</a>
+
             </nav>
 
         </div>
@@ -38,21 +80,34 @@
     </header>
 
 
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+
     <main>
 
-        <!-- INICIO -->
+
+        <!-- =========================
+             INICIO
+        ========================== -->
+
         <section class="hero" id="inicio">
 
             <div class="container hero-content">
 
+
                 <div class="hero-text">
 
-                    <span class="tag">SALUD + TECNOLOGÍA</span>
+                    <span class="tag">
+                        SALUD + TECNOLOGÍA
+                    </span>
+
 
                     <h1>
                         Una forma más sencilla
                         de conectar con tu salud.
                     </h1>
+
 
                     <p>
                         MediCore es un sistema de gestión clínica pensado
@@ -61,42 +116,95 @@
                         sencillas y accesibles.
                     </p>
 
+
                     <div class="hero-buttons">
-                        <a href="#enfoque" class="button primary">
+
+                        <a
+                            href="#enfoque"
+                            class="button primary"
+                        >
                             Conocer el proyecto
                         </a>
 
-                        <a href="#funciones" class="button secondary">
+
+                        <a
+                            href="#funciones"
+                            class="button secondary"
+                        >
                             Ver funciones
                         </a>
+
                     </div>
 
+
+                    <!-- BOTÓN DE INSTALACIÓN -->
+
+                    <button
+                        id="installButton"
+                        class="install-button"
+                    >
+                        📱 Instalar MediCore
+                    </button>
+
                 </div>
+
+
+                <!-- Tarjeta de cita -->
 
                 <div class="hero-card">
 
                     <div class="card-top">
-                        <span>Próxima consulta</span>
-                        <span class="status">Confirmada</span>
+
+                        <span>
+                            Próxima consulta
+                        </span>
+
+                        <span class="status">
+                            Confirmada
+                        </span>
+
                     </div>
 
-                    <h3>Consulta médica</h3>
 
-                    <p>Medicina general</p>
+                    <h3>
+                        Consulta médica
+                    </h3>
+
+
+                    <p>
+                        Medicina general
+                    </p>
+
 
                     <div class="appointment">
 
                         <div>
-                            <strong>Miércoles</strong>
-                            <span>15 Octubre</span>
+
+                            <strong>
+                                Miércoles
+                            </strong>
+
+                            <span>
+                                15 Octubre
+                            </span>
+
                         </div>
 
+
                         <div>
-                            <strong>10:30 AM</strong>
-                            <span>Videoconsulta</span>
+
+                            <strong>
+                                10:30 AM
+                            </strong>
+
+                            <span>
+                                Videoconsulta
+                            </span>
+
                         </div>
 
                     </div>
+
 
                     <button class="card-button">
                         Ver consulta
@@ -109,7 +217,10 @@
         </section>
 
 
-        <!-- IMAGEN -->
+        <!-- =========================
+             IMAGEN
+        ========================== -->
+
         <section class="image-section">
 
             <div class="container">
@@ -118,6 +229,7 @@
                     src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1400&q=80"
                     alt="Profesional de la salud utilizando tecnología"
                 >
+
 
                 <p class="image-caption">
                     La tecnología puede ayudar a que la atención médica
@@ -129,18 +241,29 @@
         </section>
 
 
-        <!-- MI ENFOQUE -->
-        <section class="section" id="enfoque">
+        <!-- =========================
+             MI ENFOQUE
+        ========================== -->
+
+        <section
+            class="section"
+            id="enfoque"
+        >
 
             <div class="container">
 
+
                 <div class="section-heading">
 
-                    <span class="tag">MI ENFOQUE</span>
+                    <span class="tag">
+                        MI ENFOQUE
+                    </span>
+
 
                     <h2>
                         El paciente como punto de partida
                     </h2>
+
 
                     <p>
                         Mi propuesta dentro de MediCore se enfoca en
@@ -153,11 +276,18 @@
 
                 <div class="steps">
 
+
                     <article class="step">
 
-                        <span class="step-number">01</span>
+                        <span class="step-number">
+                            01
+                        </span>
 
-                        <h3>Buscar</h3>
+
+                        <h3>
+                            Buscar
+                        </h3>
+
 
                         <p>
                             El paciente puede consultar la información
@@ -169,13 +299,20 @@
 
                     <article class="step">
 
-                        <span class="step-number">02</span>
+                        <span class="step-number">
+                            02
+                        </span>
 
-                        <h3>Agendar</h3>
+
+                        <h3>
+                            Agendar
+                        </h3>
+
 
                         <p>
-                            Puede seleccionar una fecha y horario disponible
-                            sin depender de procesos complicados.
+                            Puede seleccionar una fecha y horario
+                            disponible sin depender de procesos
+                            complicados.
                         </p>
 
                     </article>
@@ -183,9 +320,15 @@
 
                     <article class="step">
 
-                        <span class="step-number">03</span>
+                        <span class="step-number">
+                            03
+                        </span>
 
-                        <h3>Consultar</h3>
+
+                        <h3>
+                            Consultar
+                        </h3>
+
 
                         <p>
                             La información de la cita queda organizada
@@ -201,18 +344,29 @@
         </section>
 
 
-        <!-- FUNCIONES -->
-        <section class="section dark-section" id="funciones">
+        <!-- =========================
+             FUNCIONES
+        ========================== -->
+
+        <section
+            class="section dark-section"
+            id="funciones"
+        >
 
             <div class="container">
 
+
                 <div class="section-heading light">
 
-                    <span class="tag">MEDICORE</span>
+                    <span class="tag">
+                        MEDICORE
+                    </span>
+
 
                     <h2>
                         Herramientas en un mismo lugar
                     </h2>
+
 
                     <p>
                         El sistema integra diferentes funciones para
@@ -225,15 +379,20 @@
 
                 <div class="features">
 
+
                     <article class="feature">
 
-                        <div class="feature-icon">01</div>
+                        <div class="feature-icon">
+                            01
+                        </div>
 
-                        <h3>Expediente digital</h3>
+                        <h3>
+                            Expediente digital
+                        </h3>
 
                         <p>
-                            Organización de la información de los pacientes
-                            en un espacio digital.
+                            Organización de la información de los
+                            pacientes en un espacio digital.
                         </p>
 
                     </article>
@@ -241,9 +400,13 @@
 
                     <article class="feature">
 
-                        <div class="feature-icon">02</div>
+                        <div class="feature-icon">
+                            02
+                        </div>
 
-                        <h3>Agenda</h3>
+                        <h3>
+                            Agenda
+                        </h3>
 
                         <p>
                             Gestión de citas y horarios para facilitar
@@ -255,9 +418,13 @@
 
                     <article class="feature">
 
-                        <div class="feature-icon">03</div>
+                        <div class="feature-icon">
+                            03
+                        </div>
 
-                        <h3>Videoconsulta</h3>
+                        <h3>
+                            Videoconsulta
+                        </h3>
 
                         <p>
                             Una alternativa para realizar consultas
@@ -269,13 +436,17 @@
 
                     <article class="feature">
 
-                        <div class="feature-icon">04</div>
+                        <div class="feature-icon">
+                            04
+                        </div>
 
-                        <h3>Clima</h3>
+                        <h3>
+                            Recomendaciones por clima
+                        </h3>
 
                         <p>
-                            Recomendaciones relacionadas con las
-                            condiciones climáticas.
+                            Información relacionada con las condiciones
+                            climáticas que puede complementar la atención.
                         </p>
 
                     </article>
@@ -283,13 +454,17 @@
 
                     <article class="feature">
 
-                        <div class="feature-icon">05</div>
+                        <div class="feature-icon">
+                            05
+                        </div>
 
-                        <h3>Enfermedades</h3>
+                        <h3>
+                            Catálogo de enfermedades
+                        </h3>
 
                         <p>
-                            Catálogo informativo para consultar
-                            diferentes enfermedades.
+                            Espacio informativo para consultar diferentes
+                            enfermedades y sus características.
                         </p>
 
                     </article>
@@ -297,13 +472,17 @@
 
                     <article class="feature">
 
-                        <div class="feature-icon">06</div>
+                        <div class="feature-icon">
+                            06
+                        </div>
 
-                        <h3>Acceso sencillo</h3>
+                        <h3>
+                            Acceso sencillo
+                        </h3>
 
                         <p>
-                            Una propuesta pensada para que pacientes
-                            y pequeños consultorios puedan utilizarla.
+                            Una propuesta pensada para pacientes y
+                            pequeños consultorios.
                         </p>
 
                     </article>
@@ -315,18 +494,29 @@
         </section>
 
 
-        <!-- INNOVACIÓN -->
-        <section class="section" id="innovacion">
+        <!-- =========================
+             INNOVACIÓN
+        ========================== -->
+
+        <section
+            class="section"
+            id="innovacion"
+        >
 
             <div class="container innovation">
 
+
                 <div class="innovation-text">
 
-                    <span class="tag">INNOVACIÓN</span>
+                    <span class="tag">
+                        INNOVACIÓN
+                    </span>
+
 
                     <h2>
                         Más que una agenda digital
                     </h2>
+
 
                     <p>
                         MediCore busca reunir en un mismo sistema algunas
@@ -334,12 +524,14 @@
                         para organizar su atención.
                     </p>
 
+
                     <p>
                         Una de las ideas que hace diferente al proyecto
                         es combinar la gestión clínica con funciones como
                         las recomendaciones relacionadas con el clima,
                         el catálogo de enfermedades y la videoconsulta.
                     </p>
+
 
                     <p>
                         El objetivo es crear una solución que pueda
@@ -352,12 +544,16 @@
 
                 <div class="innovation-box">
 
-                    <span>IDEA PRINCIPAL</span>
+                    <span>
+                        IDEA PRINCIPAL
+                    </span>
+
 
                     <strong>
                         Tecnología médica
                         pensada para personas.
                     </strong>
+
 
                     <p>
                         Simple, organizada y accesible.
@@ -370,23 +566,31 @@
         </section>
 
 
-        <!-- VIDEO -->
+        <!-- =========================
+             VIDEO
+        ========================== -->
+
         <section class="section video-section">
 
             <div class="container">
 
+
                 <div class="section-heading">
 
-                    <span class="tag">REFERENCIA</span>
+                    <span class="tag">
+                        DEMOSTRACIÓN
+                    </span>
+
 
                     <h2>
-                        La evolución de la atención digital
+                        MediCore en acción
                     </h2>
 
+
                     <p>
-                        Los sistemas de salud digitales muestran cómo
-                        la tecnología puede simplificar procesos como
-                        la programación de citas.
+                        Una demostración del funcionamiento de la
+                        propuesta y de la experiencia de agendar
+                        una consulta.
                     </p>
 
                 </div>
@@ -394,18 +598,31 @@
 
                 <div class="video-container">
 
+                    <!--
+                    Cuando tengas tu video de YouTube,
+                    cambia VIDEO_ID por el identificador.
+
+                    Ejemplo:
+                    https://www.youtube.com/watch?v=ABC123
+
+                    quedaría:
+
+                    https://www.youtube.com/embed/ABC123
+                    -->
+
                     <iframe
-                        src="https://www.youtube.com/embed/"
-                        title="Demostración de sistema de gestión de citas médicas"
+                        src="https://www.youtube.com/embed/VIDEO_ID"
+                        title="Demostración de MediCore"
                         allowfullscreen>
                     </iframe>
 
                 </div>
 
+
                 <p class="video-note">
-                    Para la entrega final se recomienda sustituir este
-                    espacio por una grabación de pantalla del prototipo
-                    de MediCore.
+                    Se recomienda utilizar una grabación del propio
+                    sistema MediCore para relacionar la página con
+                    el proyecto final.
                 </p>
 
             </div>
@@ -413,22 +630,33 @@
         </section>
 
 
-        <!-- PROYECTO -->
-        <section class="project-section" id="proyecto">
+        <!-- =========================
+             PROYECTO
+        ========================== -->
+
+        <section
+            class="project-section"
+            id="proyecto"
+        >
 
             <div class="container project-content">
 
+
                 <div>
 
-                    <span class="tag">PROYECTO FINAL</span>
+                    <span class="tag">
+                        PROYECTO FINAL
+                    </span>
+
 
                     <h2>
                         De proyecto escolar a una solución real
                     </h2>
 
+
                     <p>
-                        MediCore nace como una propuesta académica, pero
-                        está pensada con una visión emprendedora.
+                        MediCore nace como una propuesta académica,
+                        pero está pensada con una visión emprendedora.
                         El objetivo es desarrollar una solución que
                         pueda adaptarse a las necesidades de pequeños
                         consultorios.
@@ -436,7 +664,11 @@
 
                 </div>
 
-                <a href="#inicio" class="button light-button">
+
+                <a
+                    href="#inicio"
+                    class="button light-button"
+                >
                     Volver al inicio
                 </a>
 
@@ -447,14 +679,21 @@
     </main>
 
 
-    <!-- PIE DE PÁGINA -->
+    <!-- =========================
+         PIE DE PÁGINA
+    ========================== -->
+
     <footer class="footer">
 
         <div class="container footer-content">
 
+
             <div>
 
-                <h3>MediCore</h3>
+                <h3>
+                    MediCore
+                </h3>
+
 
                 <p>
                     Tecnología para una atención médica más sencilla.
@@ -462,11 +701,13 @@
 
             </div>
 
+
             <div class="footer-info">
 
                 <p>
                     Proyecto académico · Aplicaciones Web Progresivas
                 </p>
+
 
                 <p>
                     UTP · 2026
@@ -479,7 +720,10 @@
     </footer>
 
 
+    <!-- JavaScript -->
+
     <script src="script.js"></script>
 
 </body>
+
 </html>
