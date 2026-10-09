@@ -126,8 +126,11 @@
     const localDate = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,10);
     $("#appointmentDate").min = localDate;
     $("#appointmentDate").value = localDate;
-    const nextHour = new Date(now.getTime() + 60*60*1000);
-    $("#appointmentTime").value = String(nextHour.getHours()).padStart(2,"0") + ":" + String(Math.ceil(nextHour.getMinutes()/5)*5 % 60).padStart(2,"0");
+    const suggested = new Date(now.getTime() + 65*60*1000);
+    suggested.setMinutes(Math.ceil(suggested.getMinutes()/5)*5, 0, 0);
+    const suggestedDate = new Date(suggested.getTime() - suggested.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    $("#appointmentDate").value = suggestedDate;
+    $("#appointmentTime").value = String(suggested.getHours()).padStart(2,"0") + ":" + String(suggested.getMinutes()).padStart(2,"0");
     dialog.showModal();
     $("#patientName").focus();
   }
