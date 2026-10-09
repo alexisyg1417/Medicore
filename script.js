@@ -136,3 +136,41 @@ if (notificationButton && notificationStatus) {
     }
   });
 }
+\n
+/* =========================
+   SIMULADOR DEL MODELO DE SUSCRIPCIÓN
+   Escenario ilustrativo para explicar el modelo de negocio.
+========================= */
+const clinicRange = document.getElementById("clinicRange");
+const clinicCountLabel = document.getElementById("clinicCountLabel");
+const priceSelect = document.getElementById("priceSelect");
+const monthlyRevenue = document.getElementById("monthlyRevenue");
+const annualRevenue = document.getElementById("annualRevenue");
+const clientSummary = document.getElementById("clientSummary");
+const simulatorInsight = document.getElementById("simulatorInsight");
+const growthBar = document.getElementById("growthBar");
+
+if (clinicRange && clinicCountLabel && priceSelect && monthlyRevenue && annualRevenue && clientSummary && simulatorInsight && growthBar) {
+  const mxn = (amount) => new Intl.NumberFormat("es-MX", {
+    style: "currency", currency: "MXN", maximumFractionDigits: 0
+  }).format(amount);
+
+  const updateSimulator = () => {
+    const clinics = Math.min(200, Math.max(1, Number.parseInt(clinicRange.value, 10) || 1));
+    const monthlyFee = Math.min(10000, Math.max(0, Number.parseInt(priceSelect.value, 10) || 0));
+    const monthly = clinics * monthlyFee;
+    const annual = monthly * 12;
+
+    clinicCountLabel.value = String(clinics);
+    clinicCountLabel.textContent = String(clinics);
+    monthlyRevenue.innerHTML = `${mxn(monthly)} <small>MXN</small>`;
+    annualRevenue.textContent = `${mxn(annual)} MXN`;
+    clientSummary.textContent = `${clinics} ${clinics === 1 ? "consultorio" : "consultorios"}`;
+    growthBar.style.width = `${Math.min(100, (clinics / 200) * 100)}%`;
+    simulatorInsight.textContent = `Con ${clinics} ${clinics === 1 ? "consultorio" : "consultorios"} y una cuota ilustrativa de ${mxn(monthlyFee)} MXN al mes, el ingreso bruto estimado sería de ${mxn(monthly)} MXN mensuales, antes de gastos e impuestos.`;
+  };
+
+  clinicRange.addEventListener("input", updateSimulator);
+  priceSelect.addEventListener("change", updateSimulator);
+  updateSimulator();
+}
