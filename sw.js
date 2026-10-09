@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v12-business-simulator";
+const CACHE_NAME = "medicore-v13-menu-notifications";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -19,7 +19,17 @@ const APP_SHELL = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then(async (cache) => {
+        // Un recurso opcional ausente no debe impedir que se active el Service Worker.
+        await Promise.allSettled(APP_SHELL.map(async (path) => {
+          try {
+            const response = await fetch(path, { cache: "reload" });
+            if (response.ok) await cache.put(path, response);
+          } catch (error) {
+            console.warn("No se pudo precargar:", path, error);
+          }
+        }));
+      })
       .then(() => self.skipWaiting())
   );
 });
