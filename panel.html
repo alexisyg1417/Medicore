@@ -17,7 +17,7 @@
     <form id="authForm" class="auth-card">
       <a class="brand auth-brand" href="./index.html"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></a>
       <p class="eyebrow">ACCESO SEGURO</p><h1 id="authTitle">Entra a tu espacio</h1>
-      <p class="auth-intro">Inicia sesión para consultar tus citas sincronizadas con tu cuenta.</p>
+      <p class="auth-intro">Accede con un enlace seguro enviado a tu correo. La integración de citas está en desarrollo.</p>
       <label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" placeholder="tu@correo.com" required>
       <label for="authFullName">Nombre (solo para crear una cuenta)</label><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Nombre completo">
       <button id="authSubmit" class="primary-button auth-submit" type="submit">Enviar enlace de acceso</button>
@@ -81,17 +81,17 @@
             <p class="small-note" id="permissionStatus">Puedes activar avisos del navegador desde este dispositivo.</p>
           </section>
         </div>
-        <p class="privacy-note"><span>ⓘ</span> Las citas de tu cuenta se sincronizan con Supabase. No registres datos médicos sensibles en esta versión de demostración.</p>
+        <p class="privacy-note"><span>ⓘ</span> No registres datos médicos reales ni información personal sensible en esta versión de demostración.</p>
       </section>
 
       <section class="page-content view-hidden" id="view-citas">
         <div class="welcome-row">
-          <div><p class="eyebrow">ORGANIZACIÓN</p><h1>Agenda de citas</h1><p class="muted">Registra y consulta las citas sincronizadas con tu cuenta.</p></div>
+          <div><p class="eyebrow">ORGANIZACIÓN</p><h1>Agenda de citas</h1><p class="muted">Registra y consulta las citas de demostración.</p></div>
           <button class="primary-button" id="openAppointmentForm">＋ Agendar cita</button>
         </div>
         <div class="filter-row"><div class="search-box"><span>⌕</span><input id="appointmentSearch" type="search" placeholder="Buscar por paciente o especialidad" aria-label="Buscar citas"></div><select id="appointmentFilter" aria-label="Filtrar citas"><option value="todas">Todas las citas</option><option value="proximas">Próximas</option><option value="pasadas">Pasadas</option></select></div>
         <section class="surface">
-          <div class="surface-heading"><div><h2>Consultas registradas</h2><p class="muted">Tus citas se guardan en tu cuenta de MediCore.</p></div><span class="count-chip" id="appointmentCountLabel">0 citas</span></div>
+          <div class="surface-heading"><div><h2>Consultas registradas</h2><p class="muted">Los datos de esta versión siguen guardándose localmente.</p></div><span class="count-chip" id="appointmentCountLabel">0 citas</span></div>
           <div id="appointmentList" class="appointment-table"></div>
         </section>
         <p class="privacy-note"><span>ⓘ</span> No introduzcas datos médicos reales ni información personal sensible en esta demostración.</p>
