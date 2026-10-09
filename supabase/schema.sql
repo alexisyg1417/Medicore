@@ -124,3 +124,6 @@ create trigger on_medicore_auth_user_created
 comment on table public.profiles is 'Perfil básico y rol de MediCore; el rol no se puede cambiar desde el cliente.';
 comment on table public.appointments is 'Citas propiedad de la cuenta autenticada; no almacenar diagnósticos ni notas clínicas sensibles aquí.';
 comment on table public.notifications is 'Notificaciones por usuario de MediCore.';
+
+-- The trigger invokes this function internally; clients must not call it directly.
+revoke all on function public.handle_new_medicore_user() from public, anon, authenticated;
