@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v14-pwa-manifest-icons";
+const CACHE_NAME = "medicore-v15-png-icons";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -15,7 +15,9 @@ const APP_SHELL = [
   "./manifest.json",
   "./icons/medicore-icon.svg",
   "./icons/medicore-icon-192.svg",
-  "./icons/medicore-icon-512.svg"
+  "./icons/medicore-icon-512.svg",
+  "./icons/medicore-icon-192.png",
+  "./icons/medicore-icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
