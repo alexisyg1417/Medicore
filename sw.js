@@ -1,90 +1,70 @@
-const CACHE_NAME = "medicore-v1";
-
-
-const FILES_TO_CACHE = [
-    "./",
-    "./index.html",
-    "./style.css",
-    "./script.js",
-    "./manifest.json"
+/*
+ * MediCore Service Worker
+ * Cachea los recursos propios de la aplicación y ofrece fallback offline.
+ */
+const CACHE_PREFIX = "medicore-";
+const CACHE_NAME = "medicore-v2";
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./icons/medicore-icon.svg"
 ];
 
-
-/* =========================
-   INSTALACIÓN
-========================= */
-
-self.addEventListener("install", function (event) {
-
-    event.waitUntil(
-
-        caches.open(CACHE_NAME)
-
-            .then(function (cache) {
-
-                return cache.addAll(FILES_TO_CACHE);
-
-            })
-
-    );
-
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
 });
 
-
-/* =========================
-   ACTIVACIÓN
-========================= */
-
-self.addEventListener("activate", function (event) {
-
-    event.waitUntil(
-
-        caches.keys().then(function (cacheNames) {
-
-            return Promise.all(
-
-                cacheNames.map(function (cacheName) {
-
-                    if (cacheName !== CACHE_NAME) {
-
-                        return caches.delete(cacheName);
-
-                    }
-
-                })
-
-            );
-
-        })
-
-    );
-
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
+  );
 });
 
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  const url = new URL(request.url);
 
-/* =========================
-   RESPUESTAS
-========================= */
+  // Solo interceptamos peticiones GET del mismo origen.
+  if (request.method !== "GET" || url.origin !== self.location.origin) return;
 
-self.addEventListener("fetch", function (event) {
-
+  if (request.mode === "navigate") {
     event.respondWith(
-
-        caches.match(event.request)
-
-            .then(function (cachedResponse) {
-
-                if (cachedResponse) {
-
-                    return cachedResponse;
-
-                }
-
-
-                return fetch(event.request);
-
-            })
-
+      fetch(request)
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
+          }
+          return response;
+        })
+        .catch(async () => (await caches.match(request)) || (await caches.match("./index.html")))
     );
+    return;
+  }
 
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+      return fetch(request).then((response) => {
+        if (response && response.ok && response.type === "basic") {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      });
+    })
+  );
 });
