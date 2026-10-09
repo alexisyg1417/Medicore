@@ -597,3 +597,50 @@ a {
     }
 
 }
+
+/* =========================
+   PWA: INSTALACIÓN Y ACCESIBILIDAD
+========================= */
+.install-button {
+    display: none;
+    margin-top: 22px;
+    padding: 13px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--azul);
+    color: var(--blanco);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(18, 40, 63, 0.14);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.install-button:hover {
+    background: var(--verde);
+    transform: translateY(-2px);
+}
+
+.install-button:focus-visible,
+.menu-button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--coral);
+    outline-offset: 3px;
+}
+
+.install-button[hidden] {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
