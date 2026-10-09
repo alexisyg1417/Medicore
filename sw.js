@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v11-business-model";
+const CACHE_NAME = "medicore-v12-business-simulator";
 const APP_SHELL = [
   "./",
   "./index.html",
