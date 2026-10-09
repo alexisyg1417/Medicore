@@ -1,25 +1,32 @@
 /* =========================
-   MENÚ MÓVIL
+   MENÚ RESPONSIVO
 ========================= */
-const menuButton = document.getElementById("menuButton");
-const navMenu = document.getElementById("navMenu");
+(() => {
+  const menuButton = document.getElementById("menuButton");
+  const navMenu = document.getElementById("navMenu");
+  if (!menuButton || !navMenu) return;
 
-if (menuButton && navMenu) {
-  menuButton.addEventListener("click", () => {
-    const isOpen = navMenu.classList.toggle("active");
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-    menuButton.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+  const setMenu = (open) => {
+    navMenu.classList.toggle("active", open);
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuButton.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    menuButton.textContent = open ? "✕" : "☰";
+  };
+
+  menuButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setMenu(!navMenu.classList.contains("active"));
   });
-
-  navMenu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("active");
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Abrir menú");
-    });
+  navMenu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("click", (event) => {
+    if (!navMenu.contains(event.target) && !menuButton.contains(event.target)) setMenu(false);
   });
-}
-
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") { setMenu(false); menuButton.focus(); }
+  });
+  window.addEventListener("resize", () => { if (window.innerWidth > 760) setMenu(false); });
+})();
 /* =========================
    INSTALACIÓN PWA
 ========================= */
@@ -74,69 +81,90 @@ if ("serviceWorker" in navigator && window.isSecureContext) {
 
 
 /* =========================
-   NOTIFICACIONES DEL NAVEGADOR
-   Muestra una notificación de prueba después de que el usuario lo autorice.
+   NOTIFICACIONES DE PRUEBA
 ========================= */
-const notificationButton = document.getElementById("notificationButton");
-const notificationStatus = document.getElementById("notificationStatus");
+(() => {
+  const button = document.getElementById("notificationButton");
+  const status = document.getElementById("notificationStatus");
+  if (!button || !status) return;
 
-if (notificationButton && notificationStatus) {
-  const setNotificationStatus = (message) => {
-    notificationStatus.textContent = message;
-  };
-
-  if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-    notificationButton.disabled = true;
-    setNotificationStatus("Este navegador no admite notificaciones web. Prueba con Chrome o instala MediCore como PWA.");
-  } else if (!window.isSecureContext) {
-    notificationButton.disabled = true;
-    setNotificationStatus("Las notificaciones requieren una conexión segura HTTPS.");
-  } else if (Notification.permission === "granted") {
-    notificationButton.textContent = "🔔 Enviar notificación de prueba";
-    setNotificationStatus("Las notificaciones están permitidas en este dispositivo.");
+  const message = (text) => { status.textContent = text; };
+  const supported = ("Notification" in window);
+  if (!supported) {
+    button.disabled = true;
+    message("Este navegador no admite notificaciones web. Prueba con Chrome o Edge actualizado.");
+    return;
+  }
+  if (!window.isSecureContext) {
+    button.disabled = true;
+    message("Las notificaciones requieren HTTPS. Abre MediCore desde su dirección segura.");
+    return;
+  }
+  if (Notification.permission === "granted") {
+    button.textContent = "🔔 Enviar notificación de prueba";
+    message("Permiso concedido. Pulsa para recibir un aviso de prueba.");
   } else if (Notification.permission === "denied") {
-    setNotificationStatus("Las notificaciones están bloqueadas. Actívalas en los permisos del sitio desde tu navegador.");
+    message("Las notificaciones están bloqueadas en los permisos del navegador. Habilítalas para este sitio y recarga.");
   }
 
-  notificationButton.addEventListener("click", async () => {
-    if (!("Notification" in window) || !("serviceWorker" in navigator)) return;
-
+  button.addEventListener("click", async () => {
+    button.disabled = true;
     try {
-      notificationButton.disabled = true;
-      setNotificationStatus("Solicitando permiso para mostrar notificaciones…");
-
       let permission = Notification.permission;
-      if (permission === "default") {
-        permission = await Notification.requestPermission();
-      }
-
+      if (permission === "default") permission = await Notification.requestPermission();
       if (permission !== "granted") {
-        setNotificationStatus(permission === "denied"
-          ? "No se concedió el permiso. Puedes habilitarlo en los ajustes del sitio."
-          : "No se activaron las notificaciones. Puedes intentarlo de nuevo cuando quieras.");
+        message(permission === "denied"
+          ? "Permiso denegado. Activa las notificaciones en los ajustes del sitio y vuelve a intentarlo."
+          : "No se concedió permiso. Puedes volver a intentarlo cuando quieras.");
         return;
       }
 
-      const registration = await navigator.serviceWorker.ready;
-      await registration.showNotification("MediCore · Notificaciones activadas", {
+      const options = {
         body: "¡Todo listo! MediCore puede mostrar avisos en este dispositivo.",
         icon: "./icons/medicore-icon.svg",
         badge: "./icons/medicore-icon.svg",
         tag: "medicore-test-notification",
         data: { url: "./panel.html" }
-      });
-
-      notificationButton.textContent = "🔔 Enviar otra notificación";
-      setNotificationStatus("¡Listo! Se envió una notificación de prueba a tu dispositivo.");
+      };
+      let shown = false;
+      if ("serviceWorker" in navigator) {
+        try {
+          const registration = await Promise.race([
+            navigator.serviceWorker.ready,
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Service Worker tardó demasiado")), 5000))
+          ]);
+          if (registration && registration.showNotification) {
+            await registration.showNotification("MediCore · Notificación de prueba", options);
+            shown = true;
+          }
+        } catch (error) {
+          console.warn("Se usará el método alternativo de notificación:", error);
+        }
+      }
+      if (!shown) {
+        try {
+          const notification = new Notification("MediCore · Notificación de prueba", options);
+          notification.onclick = () => { window.focus(); window.location.href = "./panel.html"; };
+          shown = true;
+        } catch (error) {
+          console.error("El navegador no pudo mostrar la notificación:", error);
+        }
+      }
+      if (shown) {
+        button.textContent = "🔔 Enviar otra notificación";
+        message("¡Notificación enviada! Si no aparece, revisa el permiso de notificaciones del dispositivo.");
+      } else {
+        message("El navegador concedió permiso, pero no pudo mostrar el aviso. Revisa los ajustes de notificaciones del sistema.");
+      }
     } catch (error) {
-      console.error("No se pudo mostrar la notificación:", error);
-      setNotificationStatus("No se pudo mostrar el aviso. Revisa los permisos del navegador e inténtalo de nuevo.");
+      console.error("Error al activar notificaciones:", error);
+      message("Ocurrió un error al mostrar el aviso. Recarga la página e inténtalo de nuevo.");
     } finally {
-      notificationButton.disabled = false;
+      button.disabled = false;
     }
   });
-}
-\n
+})();
+
 /* =========================
    SIMULADOR DEL MODELO DE SUSCRIPCIÓN
    Escenario ilustrativo para explicar el modelo de negocio.
