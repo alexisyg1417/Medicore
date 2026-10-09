@@ -62,3 +62,97 @@
 @media(max-width:950px){.auth-layout{grid-template-columns:minmax(300px,.85fr) minmax(400px,1.15fr)}.auth-visual{padding:30px 30px 24px}.auth-form-side{padding:42px 36px}.auth-visual-copy h2{font-size:39px}}
 @media(max-width:700px){.auth-layout{display:block;min-height:100vh;background:#f4f7f9;padding:24px 16px}.auth-visual{display:none}.auth-form-side{min-height:calc(100vh - 48px);padding:30px 23px;background:#fff;border:1px solid #e7ecef;border-radius:20px;box-shadow:0 12px 35px #12283f0a}.auth-card{max-width:430px}.auth-mobile-brand{display:flex;align-items:center;gap:12px;padding:0 0 34px;font-size:20px;font-weight:800;color:var(--navy)}.auth-mobile-brand .brand-mark{width:42px;height:42px;border-radius:13px}.auth-mobile-brand small{display:block;font-size:9px;letter-spacing:1.6px;color:#91a0aa;font-weight:700;margin-top:2px}.auth-card h1{font-size:30px}.auth-intro{margin-bottom:25px}.auth-card label{margin-top:17px}.auth-legal{margin-top:19px}}
 @media(prefers-reduced-motion:reduce){.auth-input-wrap,.auth-submit span:last-child{transition:none}}
+
+
+/* MediCore visual identity v2 — clínica editorial, menta y tinta */
+:root{--navy:#202d3b;--green:#087f8c;--coral:#ef765b;--ink:#273644;--muted:#74818c;--line:#e1e7e8;--canvas:#f2f5f3;--white:#fff;--shadow:0 14px 35px rgba(31,49,58,.055)}
+body{background:var(--canvas);font-family:Inter,"Aptos",system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.12px}
+.sidebar{width:264px;background:#fdfefd;color:var(--ink);border-right:1px solid #e3e9e7;padding:27px 17px 20px;box-shadow:8px 0 30px rgba(31,49,58,.025)}
+.brand{padding:0 8px 38px;color:#202d3b;font-size:21px;letter-spacing:-.8px}
+.brand-mark{background:#087f8c;border-radius:15px;color:#fff;box-shadow:0 8px 18px rgba(8,127,140,.2)}
+.brand small{color:#8a989e;letter-spacing:1.9px}
+.side-label{color:#96a3a7;letter-spacing:1.8px}
+.side-nav{gap:5px}
+.side-link{color:#68777f;padding:12px 13px;border-radius:9px;font-size:13px;font-weight:650}
+.side-link>span{font-size:18px}
+.side-link:hover{background:#f1f7f6;color:#087f8c}
+.side-link.active{background:#e7f5f3;color:#087f8c;box-shadow:inset 3px 0 #087f8c}
+.side-link b{background:#e8eeee;color:#65757c}
+.side-link .nav-badge{background:#ef765b;color:white}
+.offline-pill{border-color:#e4ebea;color:#738087;background:#f8faf9}
+.online-dot{background:#1eaa7a;box-shadow:0 0 0 4px #1eaa7a17}
+.back-link{color:#77858a}
+.main-area{margin-left:264px}
+.topbar{height:72px;background:rgba(250,252,251,.92);border-bottom-color:#e3e9e7;padding:0 clamp(22px,4vw,48px)}
+.breadcrumb{font-size:12px;letter-spacing:.15px}
+.breadcrumb strong{color:#087f8c}
+.icon-button{border-color:#e1e8e6;border-radius:11px;color:#087f8c}
+.avatar{background:#dff2ed;color:#087f8c}
+.page-content{max-width:1450px;padding:34px clamp(22px,4vw,48px) 44px}
+.welcome-row{margin-bottom:25px}
+.eyebrow{color:#087f8c;font-size:10px;letter-spacing:2.1px}
+.welcome-row h1{color:#202d3b;font-size:clamp(26px,3vw,35px);letter-spacing:-1.3px}
+.muted{color:#7b898e}
+.today-chip{border:1px solid #e0e8e5;background:#fbfdfc;border-radius:9px;color:#65767c}
+.today-chip span:first-child{color:#087f8c}
+.notice-banner{position:relative;overflow:hidden;background:#e2f3ef;border:1px solid #d3eae4;border-radius:13px;padding:19px 22px;margin-bottom:22px}
+.notice-banner:after{content:"";position:absolute;width:150px;height:150px;border:1px solid rgba(8,127,140,.12);border-radius:50%;right:90px;top:-90px;pointer-events:none}
+.banner-icon{border-radius:11px;background:#c8e9e1;color:#087f8c}
+.notice-banner strong{color:#203943}
+.notice-banner p{color:#637d7c}
+.banner-action{background:#087f8c;border-radius:8px}
+.banner-action:hover,.primary-button:hover{background:#066873}
+.stats-grid{gap:14px;margin-bottom:21px}
+.stat-card,.surface{border:1px solid #e2e9e6;border-radius:13px;box-shadow:0 6px 22px rgba(31,49,58,.035)}
+.stat-card{padding:19px 20px}
+.stat-head{color:#718087;font-size:11px}
+.stat-icon{border-radius:10px}
+.stat-icon.blue{background:#e8eefb;color:#526bc0}
+.stat-icon.green{background:#ddf2e9;color:#12835f}
+.stat-icon.coral{background:#fff0e9;color:#dc7355}
+.stat-card>strong{font-size:34px;color:#202d3b;letter-spacing:-1.4px;margin:12px 0 5px}
+.stat-foot{color:#97a2a4}
+.content-grid{gap:16px}
+.surface{padding:22px}
+.surface-heading{margin-bottom:17px}
+.surface-heading h2,.push-copy h2{font-size:15px;color:#202d3b;letter-spacing:-.35px}
+.text-action{color:#087f8c}
+.dashboard-appointment{border:1px solid #e8eeec;border-radius:10px;padding:12px}
+.date-block{border-radius:9px;background:#e5f4ef;color:#087f8c}
+.appointment-info strong,.mini-copy strong{color:#243641}
+.time-tag{background:#f1f5f3;color:#66777d;border-radius:6px}
+.mini-notification{border-bottom-color:#e9efed}
+.permission-button{border-color:#cde5de;background:#edf8f4;color:#087f8c;border-radius:8px}
+.privacy-note{color:#8a9699}
+.primary-button,.secondary-button{border-radius:8px;font-size:12px}
+.primary-button{border-color:#087f8c;background:#087f8c}
+.secondary-button{border-color:#dfe7e4;color:#586a70;background:#fbfdfc}
+.filter-row{gap:10px}
+.search-box,.filter-row select{border-color:#e0e8e5;border-radius:9px;background:#fcfdfd}
+.search-box:focus-within{border-color:#6ebbb6;box-shadow:0 0 0 3px #087f8c10}
+.count-chip{background:#edf3f1;color:#66777c}
+.appointment-row{border-top-color:#e9efed}
+.status-pill{color:#087f67;background:#e2f5ed;border-radius:6px}
+.status-pill.past{border-radius:6px}
+.small-icon-button{border-color:#e1e8e6;border-radius:7px}
+.filter-tabs{background:#edf2f0;border-radius:8px}
+.filter-tab{border-radius:6px}
+.filter-tab.active{color:#087f8c}
+.notification-item{border-bottom-color:#e8eeec}
+.notification-symbol{border-radius:10px}
+.push-card{border-color:#e2e9e6;border-radius:13px}
+.push-icon{background:#ddf2e9;color:#087f8c;border-radius:11px}
+.appointment-dialog{border-radius:14px}
+.dialog-form input:focus,.dialog-form select:focus,.dialog-form textarea:focus{border-color:#087f8c;box-shadow:0 0 0 3px #087f8c12}
+.toast{background:#202d3b;border-radius:9px}
+.auth-gate{background:#f1f5f3}
+.auth-layout{background:#fcfdfc}
+.auth-visual{background:linear-gradient(150deg,#202d3b 0%,#164a54 70%,#087f8c 130%)}
+.auth-visual .brand-mark{background:#19a18b}
+.auth-card{border-radius:15px;box-shadow:0 18px 55px rgba(31,49,58,.09);border-color:#e2e9e6}
+.auth-card h1{color:#202d3b}
+.auth-card input:focus{border-color:#087f8c;box-shadow:0 0 0 3px #087f8c12}
+.auth-submit{background:#087f8c;border-color:#087f8c}
+@media(max-width:1100px){.sidebar{width:230px}.main-area{margin-left:230px}}
+@media(max-width:760px){.sidebar{width:264px}.main-area{margin-left:0}.topbar{height:64px}.page-content{padding:25px 16px 32px}.surface{padding:17px}.notice-banner{border-radius:11px}.stats-grid{gap:9px}}
+@media(max-width:420px){.stat-card{border-radius:10px}.stat-card>strong{font-size:28px}}
