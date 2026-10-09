@@ -177,7 +177,46 @@
       </div>
     </section>
 
-    <section class="closing-cta">
+
+    <section class="section simulator-section" id="simulador">
+      <div class="container">
+        <div class="simulator-heading">
+          <div><span class="section-kicker">INTERACTIVO / EXPLORA EL NEGOCIO</span><h2>¿Y si MediCore creciera<br><em>consultorio por consultorio?</em></h2></div>
+          <p>Mueve los controles para explorar un escenario hipotético de suscripción. Cambia la cantidad de consultorios y la cuota mensual para ver cómo se modificarían los ingresos estimados.</p>
+        </div>
+        <div class="simulator-panel">
+          <div class="simulator-controls">
+            <div class="sim-control">
+              <div class="sim-control-title"><label for="clinicRange">Consultorios suscritos</label><output id="clinicCountLabel" for="clinicRange">25</output></div>
+              <input id="clinicRange" type="range" min="1" max="200" step="1" value="25">
+              <div class="range-labels"><span>1 consultorio</span><span>200 consultorios</span></div>
+            </div>
+            <div class="sim-control">
+              <label for="priceSelect">Suscripción mensual por consultorio</label>
+              <select id="priceSelect">
+                <option value="199">$199 MXN / mes</option>
+                <option value="299" selected>$299 MXN / mes</option>
+                <option value="399">$399 MXN / mes</option>
+                <option value="499">$499 MXN / mes</option>
+              </select>
+              <small>Importes ilustrativos para el ejercicio; no son precios oficiales de MediCore.</small>
+            </div>
+            <div class="sim-tip"><span>✳</span><p><strong>Prueba un escenario:</strong> ¿qué pasaría si consigues tus primeros 10 clientes? ¿Y si más adelante llegas a 100?</p></div>
+          </div>
+          <div class="simulator-results" aria-live="polite" aria-atomic="true">
+            <span class="sim-result-label">INGRESO MENSUAL ESTIMADO</span>
+            <strong id="monthlyRevenue">$7,475 <small>MXN</small></strong>
+            <div class="sim-result-divider"></div>
+            <div class="sim-result-secondary"><span>Proyección anual simple</span><strong id="annualRevenue">$89,700 MXN</strong></div>
+            <div class="sim-result-secondary"><span>Clientes del escenario</span><strong id="clientSummary">25 consultorios</strong></div>
+            <div class="sim-result-bar"><span id="growthBar"></span></div>
+            <p id="simulatorInsight">Con 25 consultorios, el ingreso bruto ilustrativo sería de $7,475 MXN al mes, antes de gastos e impuestos.</p>
+          </div>
+        </div>
+        <p class="simulator-disclaimer">Simulación educativa, no pronóstico financiero. No contempla cancelaciones, impuestos, comisiones, infraestructura, ventas, soporte ni otros gastos. Los resultados no representan ingresos actuales de MediCore.</p>
+      </div>
+    </section>
+\n    <section class="closing-cta">
       <div class="container closing-inner"><div><span class="section-kicker">MEDICORE · VISIÓN EMPRENDEDORA</span><h2>Una idea escolar con una pregunta real de negocio:</h2><p>¿Podemos hacer que la gestión de un consultorio pequeño sea más sencilla?</p></div><a href="./panel.html" class="button button-light">Explorar MediCore <span>↗</span></a></div>
     </section>
   </main>
