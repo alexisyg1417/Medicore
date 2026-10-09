@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v7-orange";
+const CACHE_NAME = "medicore-v8-orange-fix";
 const APP_SHELL = [
   "./",
   "./index.html",
