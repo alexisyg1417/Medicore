@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12283F">
+  <meta name="description" content="Panel de control, agenda y notificaciones de MediCore.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MediCore">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/medicore-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./panel.css">
+  <title>Panel de control | MediCore</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="./index.html"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></a>
+      <div class="side-label">MENÚ PRINCIPAL</div>
+      <nav class="side-nav" aria-label="Navegación principal">
+        <a class="side-link active" href="#inicio" data-view="inicio"><span>⌂</span> Resumen</a>
+        <a class="side-link" href="#citas" data-view="citas"><span>▦</span> Agenda de citas <b id="navAppointmentCount">0</b></a>
+        <a class="side-link" href="#notificaciones" data-view="notificaciones"><span>♧</span> Notificaciones <b class="nav-badge" id="navUnreadCount">0</b></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="offline-pill"><span class="online-dot"></span><span id="connectionStatus">Comprobando conexión…</span></div>
+        <a class="back-link" href="./index.html">← Volver al sitio principal</a>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        <div class="breadcrumb">MediCore <span>/</span> <strong id="currentSection">Resumen</strong></div>
+        <div class="top-actions">
+          <button class="icon-button" id="headerNotifications" aria-label="Ver notificaciones" title="Notificaciones">♧<span class="notification-dot" id="headerDot" hidden></span></button>
+          <div class="avatar" aria-hidden="true">MC</div>
+        </div>
+      </header>
+
+      <section class="page-content" id="view-inicio">
+        <div class="welcome-row">
+          <div><p class="eyebrow">PANEL DE CONTROL</p><h1>¡Hola! Bienvenido a MediCore</h1><p class="muted">Aquí tienes un resumen de la actividad de tu consultorio.</p></div>
+          <div class="today-chip"><span>◷</span><span id="todayLabel">Hoy</span></div>
+        </div>
+
+        <div class="notice-banner">
+          <div class="banner-icon">✦</div>
+          <div><strong>Tu espacio de trabajo, en un solo lugar</strong><p>Organiza las citas y revisa tus avisos sin perder el seguimiento.</p></div>
+          <button class="banner-action" id="bannerNewAppointment">+ Nueva cita</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-head"><span>Citas registradas</span><span class="stat-icon blue">▦</span></div><strong id="statTotal">0</strong><p class="stat-foot">En este dispositivo</p></article>
+          <article class="stat-card"><div class="stat-head"><span>Próximas citas</span><span class="stat-icon green">◷</span></div><strong id="statUpcoming">0</strong><p class="stat-foot">Pendientes de atención</p></article>
+          <article class="stat-card"><div class="stat-head"><span>Avisos sin leer</span><span class="stat-icon coral">♧</span></div><strong id="statUnread">0</strong><p class="stat-foot">Por revisar</p></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="surface appointments-surface">
+            <div class="surface-heading"><div><h2>Próximas citas</h2><p class="muted">Tus consultas más cercanas</p></div><button class="text-action" data-go="citas">Ver agenda →</button></div>
+            <div id="dashboardAppointments" class="dashboard-list"></div>
+          </section>
+          <section class="surface notification-surface">
+            <div class="surface-heading"><div><h2>Centro de avisos</h2><p class="muted">Actualizaciones recientes</p></div><button class="text-action" data-go="notificaciones">Ver todos →</button></div>
+            <div id="dashboardNotifications" class="mini-notifications"></div>
+            <button class="permission-button" id="enableNotifications">♧ Activar notificaciones del navegador</button>
+            <p class="small-note" id="permissionStatus">Puedes activar avisos del navegador desde este dispositivo.</p>
+          </section>
+        </div>
+        <p class="privacy-note"><span>ⓘ</span> Esta versión guarda la información localmente en este navegador. No sustituye un sistema clínico conectado a una base de datos segura.</p>
+      </section>
+
+      <section class="page-content view-hidden" id="view-citas">
+        <div class="welcome-row">
+          <div><p class="eyebrow">ORGANIZACIÓN</p><h1>Agenda de citas</h1><p class="muted">Registra y consulta las citas de demostración.</p></div>
+          <button class="primary-button" id="openAppointmentForm">＋ Agendar cita</button>
+        </div>
+        <div class="filter-row"><div class="search-box"><span>⌕</span><input id="appointmentSearch" type="search" placeholder="Buscar por paciente o especialidad" aria-label="Buscar citas"></div><select id="appointmentFilter" aria-label="Filtrar citas"><option value="todas">Todas las citas</option><option value="proximas">Próximas</option><option value="pasadas">Pasadas</option></select></div>
+        <section class="surface">
+          <div class="surface-heading"><div><h2>Consultas registradas</h2><p class="muted">Los datos se guardan en este navegador.</p></div><span class="count-chip" id="appointmentCountLabel">0 citas</span></div>
+          <div id="appointmentList" class="appointment-table"></div>
+        </section>
+        <p class="privacy-note"><span>ⓘ</span> No introduzcas datos médicos reales ni información personal sensible en esta demostración.</p>
+      </section>
+
+      <section class="page-content view-hidden" id="view-notificaciones">
+        <div class="welcome-row">
+          <div><p class="eyebrow">CENTRO DE ACTIVIDAD</p><h1>Notificaciones</h1><p class="muted">Mantente al tanto de tus recordatorios y actualizaciones.</p></div>
+          <button class="secondary-button" id="markAllRead">✓ Marcar todo como leído</button>
+        </div>
+        <div class="notification-toolbar"><div class="filter-tabs" role="group" aria-label="Filtrar notificaciones"><button class="filter-tab active" data-notification-filter="todas">Todas</button><button class="filter-tab" data-notification-filter="no-leidas">No leídas</button></div><button class="text-action danger-text" id="clearNotifications">Limpiar avisos</button></div>
+        <section class="surface notification-page-surface"><div id="notificationList" class="notification-list"></div></section>
+        <div class="push-card"><div class="push-icon">♧</div><div class="push-copy"><h2>Recibe avisos en tu dispositivo</h2><p class="muted">Permite las notificaciones del navegador para recibir recordatorios mientras MediCore esté abierto.</p><p class="small-note" id="pushPageStatus">La autorización se solicita desde tu navegador.</p></div><button class="primary-button" id="enableNotificationsPage">Activar avisos</button></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="appointmentDialog" class="appointment-dialog">
+    <form id="appointmentForm" class="dialog-form">
+      <div class="dialog-heading"><div><p class="eyebrow">AGENDA</p><h2>Nueva cita</h2></div><button type="button" class="close-dialog" id="closeAppointmentForm" aria-label="Cerrar">×</button></div>
+      <label for="patientName">Nombre del paciente <span>*</span></label><input id="patientName" name="patientName" maxlength="70" placeholder="Ej. Paciente de demostración" required>
+      <label for="specialty">Especialidad</label><select id="specialty" name="specialty"><option>Medicina general</option><option>Odontología</option><option>Pediatría</option><option>Dermatología</option><option>Nutrición</option><option>Otra especialidad</option></select>
+      <div class="form-two-col"><div><label for="appointmentDate">Fecha <span>*</span></label><input id="appointmentDate" name="appointmentDate" type="date" required></div><div><label for="appointmentTime">Hora <span>*</span></label><input id="appointmentTime" name="appointmentTime" type="time" required></div></div>
+      <label for="appointmentNote">Nota (opcional)</label><textarea id="appointmentNote" name="appointmentNote" rows="2" maxlength="180" placeholder="Nota breve, sin datos médicos sensibles"></textarea>
+      <p class="form-disclaimer">Demostración local: evita datos personales reales.</p>
+      <div class="dialog-actions"><button type="button" class="secondary-button" id="cancelAppointment">Cancelar</button><button type="submit" class="primary-button">Guardar cita</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./panel.js"></script>
+</body>
+</html>
