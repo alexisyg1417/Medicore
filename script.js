@@ -71,3 +71,68 @@ if ("serviceWorker" in navigator && window.isSecureContext) {
     }
   });
 }
+
+
+/* =========================
+   NOTIFICACIONES DEL NAVEGADOR
+   Muestra una notificación de prueba después de que el usuario lo autorice.
+========================= */
+const notificationButton = document.getElementById("notificationButton");
+const notificationStatus = document.getElementById("notificationStatus");
+
+if (notificationButton && notificationStatus) {
+  const setNotificationStatus = (message) => {
+    notificationStatus.textContent = message;
+  };
+
+  if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+    notificationButton.disabled = true;
+    setNotificationStatus("Este navegador no admite notificaciones web. Prueba con Chrome o instala MediCore como PWA.");
+  } else if (!window.isSecureContext) {
+    notificationButton.disabled = true;
+    setNotificationStatus("Las notificaciones requieren una conexión segura HTTPS.");
+  } else if (Notification.permission === "granted") {
+    notificationButton.textContent = "🔔 Enviar notificación de prueba";
+    setNotificationStatus("Las notificaciones están permitidas en este dispositivo.");
+  } else if (Notification.permission === "denied") {
+    setNotificationStatus("Las notificaciones están bloqueadas. Actívalas en los permisos del sitio desde tu navegador.");
+  }
+
+  notificationButton.addEventListener("click", async () => {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) return;
+
+    try {
+      notificationButton.disabled = true;
+      setNotificationStatus("Solicitando permiso para mostrar notificaciones…");
+
+      let permission = Notification.permission;
+      if (permission === "default") {
+        permission = await Notification.requestPermission();
+      }
+
+      if (permission !== "granted") {
+        setNotificationStatus(permission === "denied"
+          ? "No se concedió el permiso. Puedes habilitarlo en los ajustes del sitio."
+          : "No se activaron las notificaciones. Puedes intentarlo de nuevo cuando quieras.");
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification("MediCore · Notificaciones activadas", {
+        body: "¡Todo listo! MediCore puede mostrar avisos en este dispositivo.",
+        icon: "./icons/medicore-icon.svg",
+        badge: "./icons/medicore-icon.svg",
+        tag: "medicore-test-notification",
+        data: { url: "./panel.html" }
+      });
+
+      notificationButton.textContent = "🔔 Enviar otra notificación";
+      setNotificationStatus("¡Listo! Se envió una notificación de prueba a tu dispositivo.");
+    } catch (error) {
+      console.error("No se pudo mostrar la notificación:", error);
+      setNotificationStatus("No se pudo mostrar el aviso. Revisa los permisos del navegador e inténtalo de nuevo.");
+    } finally {
+      notificationButton.disabled = false;
+    }
+  });
+}
