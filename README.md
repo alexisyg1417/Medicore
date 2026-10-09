@@ -9,7 +9,7 @@ MediCore es una propuesta académica de gestión clínica con una página de pre
 - Agenda para crear, buscar, filtrar y eliminar citas de demostración.
 - Centro de notificaciones con filtros, lectura y eliminación de avisos.
 - Notificaciones del navegador, sujetas al permiso del usuario y al soporte del dispositivo.
-- Guardado local de citas y avisos mediante `localStorage`.
+- Guardado local de citas y avisos mediante `localStorage` (la sincronización CRUD con la base de datos sigue pendiente).
 - Service Worker con caché de recursos para facilitar el acceso sin conexión.
 - Diseño adaptable para escritorio y móviles.
 
