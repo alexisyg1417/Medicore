@@ -1,32 +1,22 @@
 # Conectar MediCore con Supabase
 
-Esta carpeta contiene el esquema inicial de base de datos para MediCore. **El esquema aún no está aplicado a ningún proyecto**: primero hay que seleccionar/identificar el proyecto Supabase correcto.
+El proyecto Supabase de MediCore ya tiene el esquema inicial aplicado.
 
-## 1. Aplicar el esquema
+## Base de datos activa
+- Project ref: `icapgdprieiduaklvckn`
+- Tablas: `profiles`, `appointments`, `notifications`
+- Row Level Security (RLS): activado en las tres tablas.
+- El panel incorpora acceso por enlace mágico enviado al correo (sin contraseña en el formulario).
 
-1. Abre el proyecto Supabase que usarás para MediCore.
-2. Entra en **SQL Editor**.
-3. Abre el archivo `schema.sql` de este repositorio, copia su contenido y ejecútalo.
-4. En **Table Editor**, verifica que aparezcan `profiles`, `appointments` y `notifications`.
-5. En **Authentication → Providers**, habilita Email si usarás correo y contraseña.
+## Configuración del frontend
+1. Abre `supabase-config.js`.
+2. Sustituye `PEGA_AQUI_TU_PUBLISHABLE_KEY` por la publishable key pública de tu proyecto Supabase.
+3. No uses `service_role`, `sb_secret_...`, contraseñas de base de datos ni JWT secrets.
+4. En Supabase → Authentication → URL Configuration, agrega la URL de GitHub Pages de MediCore a las URL permitidas.
+5. Prueba el acceso con un correo de prueba.
 
-## 2. Tablas incluidas
+## Seguridad
+Todas las tablas tienen RLS activado y las políticas limitan las filas a la cuenta autenticada. No registres datos médicos reales en esta versión de demostración. El esquema actual no implementa permisos completos por consultorio ni una agenda multi-médico; los roles no deben asignarse desde el cliente.
 
-- `profiles`: perfil básico y rol (`patient`, `doctor`, `admin`). El rol no puede cambiarse desde el cliente.
-- `appointments`: citas propiedad de la cuenta autenticada.
-- `notifications`: avisos privados de cada cuenta.
-
-Todas las tablas tienen Row Level Security (RLS) habilitado y políticas que limitan el acceso a filas de la cuenta autenticada. Los permisos actuales son una base segura de inicio, no un sistema completo de permisos por consultorio. Antes de habilitar cuentas de médicos y administradores hay que definir la relación entre consultorios, médicos y pacientes y administrar esos roles desde un entorno confiable.
-
-## 3. Credenciales del frontend
-
-Para una aplicación estática publicada en GitHub Pages, el frontend usa una **Project URL** y una **publishable key** (o la antigua `anon` key si el proyecto aún no tiene publishable key). Esas credenciales identifican el proyecto; RLS sigue siendo la protección de los datos.
-
-- Nunca publiques `service_role`, `sb_secret_...`, contraseñas de base de datos ni JWT secrets.
-- No guardes datos médicos reales en la demostración.
-- No habilites acceso anónimo a tablas de pacientes.
-- Activa confirmación de correo y revisa las URL de redirección de Auth para el dominio de GitHub Pages.
-
-## Estado actual
-
-La interfaz de MediCore sigue usando almacenamiento local hasta que se identifique el proyecto Supabase y se conecten la autenticación y las operaciones CRUD. Este archivo SQL prepara el esquema, pero **no crea por sí mismo una conexión en vivo**.
+## Estado de la integración
+El esquema está aplicado y el panel incluye el flujo de autenticación por correo. La publishable key debe configurarse en `supabase-config.js`. La sincronización CRUD de citas aún requiere completar y probar la integración del panel antes de usarla.
