@@ -18,11 +18,10 @@
       <a class="brand auth-brand" href="./index.html"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></a>
       <p class="eyebrow">ACCESO SEGURO</p><h1 id="authTitle">Entra a tu espacio</h1>
       <p class="auth-intro">Inicia sesión para consultar tus citas sincronizadas con tu cuenta.</p>
-      <label id="fullNameLabel" for="authFullName" hidden>Nombre completo</label><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Nombre completo" hidden>
       <label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" placeholder="tu@correo.com" required>
-      <label for="authPassword">Contraseña</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres" required>
-      <button id="authSubmit" class="primary-button auth-submit" type="submit">Iniciar sesión</button>
-      <p class="auth-switch"><span id="authSwitchText">¿Primera vez en MediCore?</span> <button id="authModeToggle" type="button">Crear cuenta</button></p>
+      <label for="authFullName">Nombre (solo para crear una cuenta)</label><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Nombre completo">
+      <button id="authSubmit" class="primary-button auth-submit" type="submit">Enviar enlace de acceso</button>
+      <p class="auth-switch">Te enviaremos un enlace seguro por correo para entrar o crear tu cuenta.</p>
       <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
       <a class="back-link auth-back" href="./index.html">← Volver al sitio principal</a>
     </form>
