@@ -13,6 +13,12 @@ MediCore es una propuesta académica de gestión clínica con una página de pre
 - Service Worker con caché de recursos para facilitar el acceso sin conexión.
 - Diseño adaptable para escritorio y móviles.
 
+## Preparación de Supabase
+
+Se añadió `supabase/schema.sql` con las tablas `profiles`, `appointments` y `notifications`, índices, políticas Row Level Security y creación automática de perfiles al registrarse. Consulta `supabase/README.md` para aplicarlo de forma segura.
+
+**Importante:** la integración en vivo todavía no está activada. El panel continúa usando `localStorage` hasta que se identifique el proyecto Supabase correcto, se aplique el esquema y se conecten autenticación y operaciones de base de datos. No publiques claves secretas ni uses datos clínicos reales en esta demostración.
+
 ## Cómo probarlo
 
 1. Abre la página publicada en GitHub Pages mediante HTTPS.
