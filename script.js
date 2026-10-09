@@ -1,120 +1,73 @@
 /* =========================
    MENÚ MÓVIL
 ========================= */
-
 const menuButton = document.getElementById("menuButton");
 const navMenu = document.getElementById("navMenu");
 
+if (menuButton && navMenu) {
+  menuButton.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("active");
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+  });
 
-menuButton.addEventListener("click", function () {
-
-    navMenu.classList.toggle("active");
-
-});
-
-
-const navLinks = document.querySelectorAll(".nav a");
-
-
-navLinks.forEach(function (link) {
-
-    link.addEventListener("click", function () {
-
-        navMenu.classList.remove("active");
-
+  navMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Abrir menú");
     });
-
-});
-
+  });
+}
 
 /* =========================
    INSTALACIÓN PWA
 ========================= */
-
 let deferredPrompt = null;
-
 const installButton = document.getElementById("installButton");
 
+if (installButton) {
+  // Solo mostramos el botón cuando el navegador confirma que se puede instalar.
+  installButton.hidden = true;
+  installButton.style.display = "none";
 
-window.addEventListener("beforeinstallprompt", function (event) {
-
-    // Evita que el navegador muestre automáticamente
+  window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
-
-    // Guardamos el evento para utilizarlo después
     deferredPrompt = event;
-
-    // Mostramos nuestro botón
+    installButton.hidden = false;
     installButton.style.display = "inline-block";
+  });
 
-});
+  installButton.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
 
-
-installButton.addEventListener("click", async function () {
-
-    if (!deferredPrompt) {
-        return;
-    }
-
-
-    // Mostrar ventana de instalación
     deferredPrompt.prompt();
-
-
-    // Esperar la respuesta del usuario
-    const { outcome } = await deferredPrompt.userChoice;
-
-
-    console.log("Resultado de instalación:", outcome);
-
-
-    // Ya no podemos utilizar este evento nuevamente
+    await deferredPrompt.userChoice;
     deferredPrompt = null;
-
-
-    // Ocultar botón
+    installButton.hidden = true;
     installButton.style.display = "none";
+  });
 
-});
-
-
-/* =========================
-   DETECTAR INSTALACIÓN
-========================= */
-
-window.addEventListener("appinstalled", function () {
-
-    console.log("MediCore fue instalada correctamente.");
-
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    installButton.hidden = true;
     installButton.style.display = "none";
-
-});
-
+    console.info("MediCore se instaló correctamente.");
+  });
+}
 
 /* =========================
    SERVICE WORKER
 ========================= */
-
-if ("serviceWorker" in navigator) {
-
-    window.addEventListener("load", function () {
-
-        navigator.serviceWorker
-            .register("sw.js")
-            .then(function () {
-
-                console.log("Service Worker registrado correctamente.");
-
-            })
-            .catch(function (error) {
-
-                console.log(
-                    "Error al registrar Service Worker:",
-                    error
-                );
-
-            });
-
-    });
-
+if ("serviceWorker" in navigator && window.isSecureContext) {
+  window.addEventListener("load", async () => {
+    try {
+      const registration = await navigator.serviceWorker.register("./sw.js", {
+        scope: "./"
+      });
+      console.info("Service Worker de MediCore registrado.", registration.scope);
+    } catch (error) {
+      console.error("No se pudo registrar el Service Worker de MediCore:", error);
+    }
+  });
 }
