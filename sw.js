@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v8-orange-fix";
+const CACHE_NAME = "medicore-v9-orange-network-first";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -42,6 +42,20 @@ self.addEventListener("fetch", (event) => {
 
   // Solo interceptamos peticiones GET del mismo origen.
   if (request.method !== "GET" || url.origin !== self.location.origin) return;
+
+  // CSS siempre se solicita primero a la red para evitar estilos antiguos guardados en caché.
+  if (url.pathname.endsWith(".css")) {
+    event.respondWith(
+      fetch(request, { cache: "no-store" }).then((response) => {
+        if (response && response.ok && response.type === "basic") {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      }).catch(() => caches.match(request))
+    );
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(
