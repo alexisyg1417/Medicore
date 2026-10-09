@@ -7,10 +7,14 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#FFFFFF",
-  "theme_color": "#12283F",
+  "background_color": "#FFFAF6",
+  "theme_color": "#F36B21",
   "lang": "es-MX",
-  "categories": ["medical", "health", "productivity"],
+  "categories": [
+    "medical",
+    "health",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "./icons/medicore-icon.svg",
