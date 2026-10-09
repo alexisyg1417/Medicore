@@ -91,3 +91,12 @@ button{font:inherit}
 @media(max-width:760px){.nav-container{min-height:70px}.menu-button{display:block}.nav{display:none;position:absolute;top:70px;left:5%;right:5%;padding:16px;background:#fffaf6;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch;gap:0}.nav.active{display:flex}.nav a{padding:12px 10px;font-size:14px;border-bottom:1px solid #f3e8df}.nav a:last-child{border-bottom:0}.hero{padding:68px 0 72px}.hero-content{grid-template-columns:1fr}.hero-text h1{font-size:clamp(42px,10vw,64px);letter-spacing:-2.8px}.hero-card{max-width:520px;width:100%;margin:10px auto 0}.steps{grid-template-columns:1fr}.innovation{grid-template-columns:1fr}.project-content{align-items:flex-start;flex-direction:column}.footer-content{align-items:flex-start;flex-direction:column}.footer-info{text-align:left}}
 @media(max-width:520px){.container{width:89%}.hero-text p{font-size:15px}.hero-buttons{flex-direction:column;align-items:stretch}.button{width:100%}.hero-card{padding:23px;border-radius:22px}.appointment{flex-direction:row}.image-section img{height:240px;border-radius:18px}.features{grid-template-columns:1fr}.section-heading{margin-bottom:30px}.section-heading h2,.innovation-text h2{letter-spacing:-1.3px}.project-content h2{letter-spacing:-1.3px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* Botón de activación de notificaciones */
+.notification-action{margin-top:18px;max-width:430px}
+.notification-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 18px;border:1px solid #f4b18b;border-radius:12px;background:#fff0e5;color:#b9430a;font-weight:800;font-size:13px;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s}
+.notification-button:hover{transform:translateY(-2px);background:#ffe2cf;box-shadow:0 8px 20px #f36b2120}
+.notification-button:disabled{opacity:.6;cursor:wait;transform:none}
+.notification-status{margin-top:8px;color:#85786f;font-size:12px;line-height:1.5}
+@media(max-width:520px){.notification-action{max-width:none}.notification-button{width:100%}.notification-status{text-align:center}}
