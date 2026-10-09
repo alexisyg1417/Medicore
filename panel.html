@@ -14,17 +14,43 @@
 </head>
 <body>
   <section id="authGate" class="auth-gate" aria-labelledby="authTitle">
-    <form id="authForm" class="auth-card">
-      <a class="brand auth-brand" href="./index.html"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></a>
-      <p class="eyebrow">ACCESO SEGURO</p><h1 id="authTitle">Entra a tu espacio</h1>
-      <p class="auth-intro">Accede con un enlace seguro enviado a tu correo. La integración de citas está en desarrollo.</p>
-      <label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" placeholder="tu@correo.com" required>
-      <label for="authFullName">Nombre (solo para crear una cuenta)</label><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Nombre completo">
-      <button id="authSubmit" class="primary-button auth-submit" type="submit">Enviar enlace de acceso</button>
-      <p class="auth-switch">Te enviaremos un enlace seguro por correo para entrar o crear tu cuenta.</p>
-      <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
-      <a class="back-link auth-back" href="./index.html">← Volver al sitio principal</a>
-    </form>
+    <div class="auth-layout">
+      <div class="auth-visual">
+        <a class="brand auth-brand" href="./index.html" aria-label="MediCore, inicio">
+          <span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span>
+        </a>
+        <div class="auth-visual-copy">
+          <span class="auth-kicker"><span class="auth-kicker-dot"></span> PLATAFORMA DE GESTIÓN CLÍNICA</span>
+          <h2>Tu consultorio,<br><em>mejor organizado.</em></h2>
+          <p>Un espacio para dar seguimiento a tu agenda, mantener tus avisos al día y tener tu operación más ordenada.</p>
+          <div class="auth-feature-list">
+            <div class="auth-feature"><span class="auth-feature-icon">▦</span><span><strong>Agenda centralizada</strong><small>Consulta y organiza tus citas.</small></span></div>
+            <div class="auth-feature"><span class="auth-feature-icon">♧</span><span><strong>Avisos en un solo lugar</strong><small>Ten presentes tus recordatorios.</small></span></div>
+            <div class="auth-feature"><span class="auth-feature-icon">⌑</span><span><strong>Acceso protegido</strong><small>Entra mediante un enlace enviado a tu correo.</small></span></div>
+          </div>
+        </div>
+        <div class="auth-visual-footer"><span>MEDICORE</span><span>GESTIÓN MÁS CLARA, ATENCIÓN MÁS SIMPLE</span></div>
+        <div class="auth-orb auth-orb-one"></div><div class="auth-orb auth-orb-two"></div>
+      </div>
+      <div class="auth-form-side">
+        <form id="authForm" class="auth-card">
+          <div class="auth-mobile-brand brand"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></div>
+          <p class="eyebrow">BIENVENIDO DE NUEVO</p>
+          <h1 id="authTitle">Accede a tu cuenta</h1>
+          <p class="auth-intro">Te enviaremos un enlace seguro a tu correo para iniciar sesión o crear tu cuenta.</p>
+          <label for="authEmail">Correo electrónico</label>
+          <div class="auth-input-wrap"><span aria-hidden="true">✉</span><input id="authEmail" type="email" autocomplete="email" placeholder="nombre@correo.com" required></div>
+          <label for="authFullName">Nombre completo <span class="optional-label">Opcional si ya tienes cuenta</span></label>
+          <div class="auth-input-wrap"><span aria-hidden="true">♙</span><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Tu nombre"></div>
+          <button id="authSubmit" class="primary-button auth-submit" type="submit"><span>Enviar enlace de acceso</span><span aria-hidden="true">→</span></button>
+          <p class="auth-secure-note"><span aria-hidden="true">✓</span> No necesitas contraseña. El enlace se envía a tu correo.</p>
+          <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+          <div class="auth-divider"><span></span><small>ACCESO SEGURO</small><span></span></div>
+          <a class="back-link auth-back" href="./index.html">← Volver al sitio principal</a>
+          <p class="auth-legal">Versión de demostración · Evita introducir datos médicos reales.</p>
+        </form>
+      </div>
+    </div>
   </section>
   <div class="app-shell" id="appShell" hidden>
     <aside class="sidebar" id="sidebar">
@@ -125,7 +151,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase-config.js"></script>
   <script src="./panel.js"></script>
-  <script src="./supabase-auth.js"></script>
   <script src="./supabase-auth.js"></script>
 </body>
 </html>
