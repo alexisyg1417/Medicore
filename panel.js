@@ -257,6 +257,7 @@
     $(".online-dot").classList.toggle("offline", !online);
   }
   $("#todayLabel").textContent = formatDate(new Date(), { weekday:"long", day:"numeric", month:"long" });
+  // Supabase integration bootstrap is loaded from supabase-config.js.
   getNotifications();
   updateConnection();
   setView(location.hash.replace("#","") || "inicio");
