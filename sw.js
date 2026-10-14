@@ -3,7 +3,7 @@
  * Cachea los recursos propios de la aplicación y ofrece fallback offline.
  */
 const CACHE_PREFIX = "medicore-";
-const CACHE_NAME = "medicore-v15-png-icons";
+const CACHE_NAME = "medicore-v16-supabase-dashboard";
 const APP_SHELL = [
   "./",
   "./index.html",
