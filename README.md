@@ -1,50 +1,55 @@
 # MediCore
 
-MediCore es una propuesta académica de gestión clínica con una página de presentación y un panel interactivo instalable como Progressive Web App (PWA).
+MediCore es un proyecto académico de gestión de consultorios con una página de presentación y un panel instalable como Progressive Web App (PWA).
 
-## Funciones
+## Qué puedes hacer
 
-- Página principal informativa y diseño adaptable.
-- Panel de control con resumen de actividad.
-- Agenda para crear, buscar, filtrar y eliminar citas de demostración.
-- Centro de notificaciones con filtros, lectura y eliminación de avisos.
-- Notificaciones del navegador, sujetas al permiso del usuario y al soporte del dispositivo.
-- Guardado local de citas y avisos mediante `localStorage` (la sincronización CRUD con la base de datos sigue pendiente).
-- Service Worker con caché de recursos para facilitar el acceso sin conexión.
-- Diseño adaptable para escritorio y móviles.
+- Consultar la página principal adaptable a computadora y celular.
+- Entrar al panel con un enlace de acceso enviado al correo.
+- Crear, buscar, filtrar y eliminar citas.
+- Consultar avisos, marcarlos como leídos o eliminarlos.
+- Activar notificaciones del navegador si el dispositivo lo permite.
+- Instalar la PWA y utilizar recursos almacenados en caché.
 
-## Preparación de Supabase
+## Base de datos: Supabase
 
-Se añadió `supabase/schema.sql` con las tablas `profiles`, `appointments` y `notifications`, índices, políticas Row Level Security y creación automática de perfiles al registrarse. Consulta `supabase/README.md` para aplicarlo de forma segura.
+El panel está conectado al proyecto Supabase de MediCore. Utiliza PostgreSQL y tres tablas:
 
-**Importante:** la integración en vivo todavía no está activada. El panel continúa usando `localStorage` hasta que se identifique el proyecto Supabase correcto, se aplique el esquema y se conecten autenticación y operaciones de base de datos. No publiques claves secretas ni uses datos clínicos reales en esta demostración.
+| Tabla | ¿Qué guarda? |
+|---|---|
+| `profiles` | El perfil básico de la cuenta. |
+| `appointments` | Citas, fecha, hora, especialidad y nota breve. |
+| `notifications` | Avisos y si ya fueron leídos. |
+
+Las citas y notificaciones se consultan y guardan en la nube. Por eso, al entrar con la misma cuenta desde otro dispositivo, puedes recuperar los registros de esa cuenta. Las políticas de Row Level Security (RLS) restringen las filas a su propietario. El navegador usa únicamente la publishable key pública; nunca agregues una clave `service_role` o `sb_secret` al frontend.
+
+El esquema se encuentra en `supabase/schema.sql`. La base de datos ya cuenta con las tablas `profiles`, `appointments` y `notifications`.
 
 ## Cómo probarlo
 
-1. Abre la página publicada en GitHub Pages mediante HTTPS.
-2. Entra a **Panel de control** desde la página principal o abre `panel.html`.
-3. Selecciona **Nueva cita** para registrar una cita de prueba.
-4. Abre **Notificaciones** para revisar los avisos, marcarlos como leídos o eliminarlos.
-5. Si quieres probar los avisos del sistema, pulsa **Activar notificaciones** y acepta el permiso del navegador.
-
-También puedes servir la carpeta con un servidor local. El Service Worker y las notificaciones requieren un contexto seguro: HTTPS o localhost.
+1. Abre la página publicada mediante HTTPS.
+2. Entra al panel desde **Ver MediCore**.
+3. Escribe tu correo y solicita el enlace de acceso.
+4. Abre el enlace que recibas y regresa al panel.
+5. En **Agenda de citas**, crea una cita con información ficticia.
+6. Recarga la página o entra desde otro dispositivo con la misma cuenta: la cita debe seguir guardada.
+7. Revisa la tabla `appointments` desde **Supabase → Table Editor** para comprobar el registro.
 
 ## Archivos principales
 
-- `index.html`: página principal.
+- `index.html`: página informativa.
 - `style.css`: estilos de la página principal.
-- `script.js`: menú, instalación PWA y registro del Service Worker.
-- `panel.html`: panel de control, agenda y centro de notificaciones.
+- `script.js`: menú, instalación PWA y notificaciones de prueba.
+- `panel.html`: acceso y panel.
 - `panel.css`: estilos del panel.
-- `panel.js`: comportamiento de agenda, avisos y almacenamiento local.
-- `manifest.json`: metadatos de instalación de la PWA.
-- `sw.js`: caché y comportamiento básico sin conexión.
-- `icons/medicore-icon.svg`: icono de la aplicación.
+- `panel.js`: operaciones CRUD con Supabase y renderizado de citas/avisos.
+- `supabase-config.js`: URL y publishable key pública.
+- `supabase-auth.js`: acceso por enlace de correo.
+- `supabase/schema.sql`: esquema y políticas de seguridad.
+- `manifest.json`: configuración de instalación.
+- `sw.js`: caché y funcionamiento básico sin conexión.
+- `icons/`: iconos de MediCore.
 
-## Alcance y privacidad
+## Importante
 
-Esta versión es una demostración de frontend. Las citas y notificaciones se guardan únicamente en el navegador y dispositivo donde se crean; no se sincronizan entre usuarios o dispositivos. No introduzcas información clínica real ni datos personales sensibles.
-
-Los avisos del navegador y los recordatorios programados por esta versión funcionan mientras el panel está abierto. Para enviar notificaciones push cuando la aplicación está cerrada, sincronizar información o administrar usuarios, hace falta integrar un backend y un servicio push.
-
-MediCore es un proyecto académico y no sustituye un sistema clínico certificado ni el criterio de profesionales de salud.
+MediCore es una demostración académica, no un sistema clínico certificado. Utiliza solamente datos ficticios: no registres expedientes, diagnósticos ni información médica real. Las notificaciones del navegador dependen del permiso y del soporte del dispositivo; no equivalen a un servicio push garantizado cuando la aplicación está cerrada.
