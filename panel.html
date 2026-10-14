@@ -91,7 +91,7 @@
         </div>
 
         <div class="stats-grid">
-          <article class="stat-card"><div class="stat-head"><span>Citas registradas</span><span class="stat-icon blue">▦</span></div><strong id="statTotal">0</strong><p class="stat-foot">En este dispositivo</p></article>
+          <article class="stat-card"><div class="stat-head"><span>Citas registradas</span><span class="stat-icon blue">▦</span></div><strong id="statTotal">0</strong><p class="stat-foot">Guardadas en tu cuenta</p></article>
           <article class="stat-card"><div class="stat-head"><span>Próximas citas</span><span class="stat-icon green">◷</span></div><strong id="statUpcoming">0</strong><p class="stat-foot">Pendientes de atención</p></article>
           <article class="stat-card"><div class="stat-head"><span>Avisos sin leer</span><span class="stat-icon coral">♧</span></div><strong id="statUnread">0</strong><p class="stat-foot">Por revisar</p></article>
         </div>
@@ -108,7 +108,7 @@
             <p class="small-note" id="permissionStatus">Puedes activar avisos del navegador desde este dispositivo.</p>
           </section>
         </div>
-        <p class="privacy-note"><span>ⓘ</span> No registres datos médicos reales ni información personal sensible en esta versión de demostración.</p>
+        <p class="privacy-note"><span>ⓘ</span> Usa únicamente datos ficticios. Esta demo no está certificada para almacenar información clínica real.</p>
       </section>
 
       <section class="page-content view-hidden" id="view-citas">
@@ -118,7 +118,7 @@
         </div>
         <div class="filter-row"><div class="search-box"><span>⌕</span><input id="appointmentSearch" type="search" placeholder="Buscar por paciente o especialidad" aria-label="Buscar citas"></div><select id="appointmentFilter" aria-label="Filtrar citas"><option value="todas">Todas las citas</option><option value="proximas">Próximas</option><option value="pasadas">Pasadas</option></select></div>
         <section class="surface">
-          <div class="surface-heading"><div><h2>Consultas registradas</h2><p class="muted">Los datos de esta versión siguen guardándose localmente.</p></div><span class="count-chip" id="appointmentCountLabel">0 citas</span></div>
+          <div class="surface-heading"><div><h2>Consultas registradas</h2><p class="muted">Las citas se guardan en tu base de datos de Supabase.</p></div><span class="count-chip" id="appointmentCountLabel">0 citas</span></div>
           <div id="appointmentList" class="appointment-table"></div>
         </section>
         <p class="privacy-note"><span>ⓘ</span> No introduzcas datos médicos reales ni información personal sensible en esta demostración.</p>
@@ -143,7 +143,7 @@
       <label for="specialty">Especialidad</label><select id="specialty" name="specialty"><option>Medicina general</option><option>Odontología</option><option>Pediatría</option><option>Dermatología</option><option>Nutrición</option><option>Otra especialidad</option></select>
       <div class="form-two-col"><div><label for="appointmentDate">Fecha <span>*</span></label><input id="appointmentDate" name="appointmentDate" type="date" required></div><div><label for="appointmentTime">Hora <span>*</span></label><input id="appointmentTime" name="appointmentTime" type="time" required></div></div>
       <label for="appointmentNote">Nota (opcional)</label><textarea id="appointmentNote" name="appointmentNote" rows="2" maxlength="180" placeholder="Nota breve, sin datos médicos sensibles"></textarea>
-      <p class="form-disclaimer">Demostración local: evita datos personales reales.</p>
+      <p class="form-disclaimer">Demo académica: utiliza únicamente datos ficticios.</p>
       <div class="dialog-actions"><button type="button" class="secondary-button" id="cancelAppointment">Cancelar</button><button type="submit" class="primary-button">Guardar cita</button></div>
     </form>
   </dialog>
