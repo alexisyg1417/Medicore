@@ -1,5 +1,5 @@
 /* MediCore PWA — caché seguro del shell y respaldo sin conexión */
-const CACHE_NAME = "medicore-shell-v22";
+const CACHE_NAME = "medicore-shell-v23";
 const SCOPE_URL = self.registration.scope;
 
 const APP_SHELL = [
@@ -17,8 +17,6 @@ const APP_SHELL = [
   "./supabase-auth.js",
   "./manifest.json",
   "./icons/medicore-icon.svg",
-  "./icons/medicore-icon-192.png",
-  "./icons/medicore-icon-512.png"
 ];
 
 const toScopeURL = (path) => new URL(path, SCOPE_URL).href;
