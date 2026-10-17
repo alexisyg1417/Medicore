@@ -97,30 +97,20 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Para recursos estáticos, usar caché primero; actualizarla cuando la red responda.
+  // Para recursos estáticos: red primero, caché como respaldo.
+  // Así se evita llamar a event.waitUntil() tarde en el ciclo del evento.
   if (["style", "script", "image", "font"].includes(request.destination)) {
     event.respondWith((async () => {
-      const cached = await caches.match(request, { ignoreSearch: true });
-      const networkPromise = fetch(request).then(async (response) => {
+      try {
+        const response = await fetch(request);
         if (response.ok && response.type !== "opaque") {
           const cache = await caches.open(CACHE_NAME);
           await cache.put(request, response.clone());
         }
         return response;
-      });
-
-      if (cached) {
-        // La actualización en segundo plano no debe impedir responder desde caché.
-        event.waitUntil(networkPromise.catch((error) =>
-          console.warn("[MediCore SW] Actualización de caché omitida:", request.url, error)
-        ));
-        return cached;
-      }
-
-      try {
-        return await networkPromise;
       } catch (_) {
-        return new Response("Recurso no disponible sin conexión.", {
+        const cached = await caches.match(request, { ignoreSearch: true });
+        return cached || new Response("Recurso no disponible sin conexión.", {
           status: 503,
           headers: { "Content-Type": "text/plain; charset=utf-8" }
         });
