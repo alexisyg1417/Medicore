@@ -1,5 +1,5 @@
 /* MediCore PWA — caché seguro del shell y respaldo sin conexión */
-const CACHE_NAME = "medicore-shell-v24";
+const CACHE_NAME = "medicore-shell-v25";
 const SCOPE_URL = self.registration.scope;
 
 const APP_SHELL = [
@@ -110,7 +110,9 @@ self.addEventListener("fetch", (event) => {
       } catch (_) {
         const pathname = url.pathname.replace(/\/$/, "");
         const candidates = [request, url.href];
-        if (pathname.endsWith("/demo") || pathname.endsWith("/demo.html")) {
+        if (pathname.endsWith("/reportes") || pathname.endsWith("/reportes.html")) {
+          candidates.push(toScopeURL("./reportes.html"));
+        } else if (pathname.endsWith("/demo") || pathname.endsWith("/demo.html")) {
           candidates.push(toScopeURL("./demo.html"));
         } else if (pathname.endsWith("/panel") || pathname.endsWith("/panel.html")) {
           candidates.push(toScopeURL("./panel.html"));
