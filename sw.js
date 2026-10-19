@@ -1,5 +1,5 @@
 /* MediCore PWA — caché seguro del shell y respaldo sin conexión */
-const CACHE_NAME = "medicore-shell-v23";
+const CACHE_NAME = "medicore-shell-v24";
 const SCOPE_URL = self.registration.scope;
 
 const APP_SHELL = [
@@ -13,6 +13,8 @@ const APP_SHELL = [
   "./panel.html",
   "./panel.css",
   "./panel.js",
+  "./reportes.html",
+  "./reportes.js",
   "./supabase-config.js",
   "./supabase-auth.js",
   "./manifest.json",
