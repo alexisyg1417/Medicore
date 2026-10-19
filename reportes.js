@@ -45,7 +45,7 @@ async function load(){
  if(!window.Chart){msg("No se pudo cargar Chart.js. Comprueba tu conexión y recarga la página.");return;}
  let session=null;
  if(db){try{const r=await db.auth.getSession();session=r.data?.session||null;}catch(e){}}
- if(db&&!session){msg("Inicia sesión en MediCore desde el panel y vuelve a abrir esta página.");return;}
+ if(db&&!session){const d=readDemo();patients=d.patients;records=d.records;plans=d.plans;diseases=d.diseases;links=d.links;mode="demo";msg("VISTA PÚBLICA DE DEMOSTRACIÓN: datos ficticios guardados en este navegador. Inicia sesión en el panel para consultar los datos de tu cuenta.");render();return;}
  if(session)$("#accountLabel").textContent=session.user.email||"Cuenta";
  try{
   if(db){
