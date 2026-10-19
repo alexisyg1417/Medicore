@@ -8,6 +8,7 @@ MediCore es un proyecto académico de gestión de consultorios con una página d
 - Entrar al panel con un enlace de acceso enviado al correo.
 - Crear, buscar, filtrar y eliminar citas.
 - Consultar avisos, marcarlos como leídos o eliminarlos.
+- Consultar el módulo de reportes y recomendaciones: indicadores, gráficas, exportación a PDF y catálogo de enfermedades (requiere el esquema clínico complementario).
 - Activar notificaciones del navegador si el dispositivo lo permite.
 - Instalar la PWA y utilizar recursos almacenados en caché.
 
@@ -43,6 +44,8 @@ El esquema se encuentra en `supabase/schema.sql`. La base de datos ya cuenta con
 - `panel.html`: acceso y panel.
 - `panel.css`: estilos del panel.
 - `panel.js`: operaciones CRUD con Supabase y renderizado de citas/avisos.
+- `reportes.html` y `reportes.js`: analítica, gráficas y recomendaciones.
+- `supabase/reports-schema.sql`: esquema complementario para pacientes, expedientes, planes nutricionales y enfermedades. Revísalo y ejecútalo en el proyecto Supabase correcto antes de usar ese módulo.
 - `supabase-config.js`: URL y publishable key pública.
 - `supabase-auth.js`: acceso por enlace de correo.
 - `supabase/schema.sql`: esquema y políticas de seguridad.
