@@ -142,6 +142,10 @@
       setMessage("Enlace de recuperación detectado. Escribe tu nueva contraseña.", true);
       showGate();
     } else if (data.session?.user) {
+      if (new URLSearchParams(location.search).get("next") === "reportes") {
+        location.replace("./reportes.html");
+        return;
+      }
       showApp(data.session.user);
     } else {
       showGate();
