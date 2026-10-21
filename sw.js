@@ -1,5 +1,5 @@
 /* MediCore PWA — caché seguro del shell y respaldo sin conexión */
-const CACHE_NAME = "medicore-shell-v25";
+const CACHE_NAME = "medicore-shell-v26";
 const SCOPE_URL = self.registration.scope;
 
 const APP_SHELL = [
