@@ -60,13 +60,39 @@ async function load(){
 }
 $("#patientSelect").addEventListener("change",renderRecommendations);
 $("#patientForm").addEventListener("submit",async e=>{
- e.preventDefault();const form=e.currentTarget;const f=new FormData(form);const name=String(f.get("full_name")||"").trim();if(!name){msg("Escribe el nombre ficticio del paciente.",true);return;}
+ e.preventDefault();
+ const form=e.currentTarget;
+ const button=form.querySelector('button[type="submit"]');
+ const originalText=button?.textContent||"Registrar paciente";
+ const f=new FormData(form);
+ const name=String(f.get("full_name")||"").trim();
+ if(!name){msg("Escribe el nombre del paciente.",true);return;}
+ if(!db){msg("No hay conexión con Supabase. Recarga la página y verifica tu conexión.",true);return;}
  const row={full_name:name,sex:String(f.get("sex")||"unspecified")};
  if(f.get("birth_date"))row.birth_date=String(f.get("birth_date"));
  if(f.get("height_m"))row.height_m=Number(f.get("height_m"));
  if(f.get("weight_kg"))row.weight_kg=Number(f.get("weight_kg"));
- try{const {error}=await db.from("patients").insert(row);if(error)throw error;form.reset();await load();msg("Paciente guardado correctamente en Supabase.");}
- catch(err){msg("No se pudo registrar al paciente: "+err.message,true);}
+ if(button){button.disabled=true;button.textContent="Guardando…";}
+ msg("Guardando paciente en Supabase…");
+ try{
+  const {data:sessionData,error:sessionError}=await db.auth.getSession();
+  if(sessionError)throw sessionError;
+  if(!sessionData.session?.user)throw new Error("Tu sesión expiró. Inicia sesión de nuevo y vuelve a intentarlo.");
+  const {data:created,error}=await db.from("patients").insert(row).select("id,full_name,created_at").single();
+  if(error)throw error;
+  form.reset();
+  try{await load();}catch(refreshError){console.error("Paciente guardado; error al actualizar vista:",refreshError);}
+  msg("Paciente «"+created.full_name+"» guardado correctamente. Total visible: "+patients.length+".");
+ }catch(err){
+  console.error("Error al registrar paciente:",err);
+  const raw=String(err?.message||"Error desconocido");
+  let detail=raw;
+  if(/row-level security|permission denied|42501/i.test(raw))detail="Supabase rechazó la operación por permisos. Cierra sesión, vuelve a entrar y comprueba las políticas RLS de la tabla patients.";
+  else if(/failed to fetch|networkerror|fetch/i.test(raw))detail="No se pudo contactar con Supabase. Comprueba tu conexión y vuelve a intentarlo.";
+  msg("No se pudo registrar el paciente: "+detail,true);
+ }finally{
+  if(button){button.disabled=false;button.textContent=originalText;}
+ }
 });
 $("#recordForm").addEventListener("submit",async e=>{
  e.preventDefault();const form=e.currentTarget;const f=new FormData(form);try{const {error}=await db.from("medical_records").insert({patient_id:String(f.get("patient_id")),summary:String(f.get("summary")||"").trim()});if(error)throw error;form.reset();await load();msg("Expediente guardado correctamente.");}catch(err){msg("No se pudo guardar el expediente: "+err.message,true);}
@@ -106,5 +132,7 @@ $("#diseaseList").addEventListener("click",async e=>{
 $("#refreshReport").addEventListener("click",load);
 $("#exportPdf").addEventListener("click",()=>{if(!window.html2pdf){window.print();return;}window.html2pdf().set({margin:8,filename:"MediCore-reporte.pdf",image:{type:"jpeg",quality:.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:"mm",format:"letter",orientation:"landscape"}}).from($(".report-page")).save();});
 $("#signOutButton").addEventListener("click",async()=>{if(db)await db.auth.signOut();location.href="./panel.html";});
+window.addEventListener("error",event=>{console.error("MediCore reportes:",event.error||event.message);if($("#reportMessage"))msg("Ocurrió un error en la página. Recarga con Ctrl + F5. Detalle: "+(event.message||"error de JavaScript"),true);});
+window.addEventListener("unhandledrejection",event=>{console.error("MediCore reportes:",event.reason);if($("#reportMessage"))msg("Una operación no pudo completarse: "+(event.reason?.message||"error inesperado"),true);});
 load();
 })();
