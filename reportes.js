@@ -43,21 +43,21 @@ function render(){
 }
 async function load(){
  if(!window.Chart){msg("No se pudo cargar Chart.js. Comprueba tu conexión y recarga la página.");return;}
- let session=null;
- if(db){try{const r=await db.auth.getSession();session=r.data?.session||null;}catch(e){}}
- if(db&&!session){const d=readDemo();patients=d.patients;records=d.records;plans=d.plans;diseases=d.diseases;links=d.links;mode="demo";msg("VISTA PÚBLICA DE DEMOSTRACIÓN: datos ficticios guardados en este navegador. Inicia sesión en el panel para consultar los datos de tu cuenta.");render();return;}
- if(session)$("#accountLabel").textContent=session.user.email||"Cuenta";
+ if(!db){msg("Supabase no está configurado. Vuelve al inicio de sesión y revisa la conexión.");return;}
  try{
-  if(db){
-   const [p,r,n,d,l]=await Promise.all([getRows("patients"),getRows("medical_records"),getRows("nutrition_plans"),getRows("diseases"),getRows("patient_diseases")]);
-   patients=p;records=r;plans=n;diseases=d;links=l;mode="remote";
-   msg("Reporte actualizado con datos de Supabase.");
-  }else throw new Error("Cliente de Supabase no configurado");
+  const sessionResult=await db.auth.getSession();
+  const session=sessionResult.data?.session;
+  if(!session?.user){location.replace("./panel.html?next=reportes");return;}
+  $("#accountLabel").textContent=session.user.email||"Cuenta";
+  const [p,r,n,d,l]=await Promise.all([getRows("patients"),getRows("medical_records"),getRows("nutrition_plans"),getRows("diseases"),getRows("patient_diseases")]);
+  patients=p;records=r;plans=n;diseases=d;links=l;mode="remote";
+  msg("Reporte actualizado con datos de tu cuenta en Supabase.");
+  render();
  }catch(e){
-  const d=readDemo();patients=d.patients;records=d.records;plans=d.plans;diseases=d.diseases;links=d.links;mode="demo";
-  msg("MODO DEMOSTRACIÓN: los datos de esta pantalla son ficticios y se guardan en este navegador. Para conectar datos de Supabase, instala el esquema de supabase/reports-schema.sql. "+(e.message||""));
+  mode="remote";patients=[];records=[];plans=[];diseases=[];links=[];
+  render();
+  msg("No se pudieron cargar los datos de tu cuenta. Revisa que las tablas y políticas RLS estén instaladas en Supabase. Detalle: "+(e.message||"Error de conexión"));
  }
- render();
 }
 $("#patientSelect").addEventListener("change",async()=>{
  const p=patients.find(x=>String(x.id)===$("#patientSelect").value);if(!p){$("#recommendations").innerHTML='<p class="report-muted">Selecciona un paciente para consultar recomendaciones.</p>';return;}
