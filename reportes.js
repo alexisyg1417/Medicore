@@ -24,12 +24,12 @@ function render(){
  chart("plansChart","doughnut",["Pendientes","Autorizados","Denegados"],[status.pending,status.authorized,status.denied],"Planes");
  const ranges={"Bajo peso":0,"Normal":0,"Sobrepeso":0,"Obesidad":0};values.forEach(v=>ranges[bmiGroup(v)]++);chart("bmiChart","bar",Object.keys(ranges),Object.values(ranges),"Pacientes");
  const recent=[...patients].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,10);
- $("#recentPatients").innerHTML=recent.length?recent.map(p=>{const v=bmiOf(p);return '<div class="report-patient"><span><strong>'+esc(p.full_name)+'</strong><br><small class="report-small">'+esc(p.created_at?new Date(p.created_at).toLocaleDateString("es-MX"):"")+' · '+(v?"IMC "+esc(v.toFixed(1)):"Sin IMC")+'</small></span><span class="report-small">'+esc(p.sex||"")+'</span></div>';}).join(""):'<p class="report-muted">No hay pacientes registrados. Usa el formulario para agregar uno.</p>';
+ $("#recentPatients").innerHTML=recent.length?recent.map(p=>{const v=bmiOf(p);return '<div class="report-patient"><span><strong>'+esc(p.full_name)+'</strong><br><small class="report-small">'+esc(p.created_at?new Date(p.created_at).toLocaleDateString("es-MX"):"")+' · '+(v?"IMC "+esc(v.toFixed(1)):"Sin IMC")+'</small></span><span><small class="report-small">'+esc(p.sex||"")+'</small> <button type="button" class="report-action secondary no-print" data-delete-patient="'+esc(p.id)+'">Eliminar</button></span></div>';}).join(""):'<p class="report-muted">No hay pacientes registrados. Usa el formulario para agregar uno.</p>';
  optionsForPatients();
  $("#diseaseSelect").innerHTML='<option value="">Vincular enfermedad existente</option>'+diseases.map(d=>'<option value="'+esc(d.id)+'">'+esc(d.name)+'</option>').join("");
  $("#diseaseList").innerHTML=diseases.length?diseases.map(d=>'<div class="recommendation"><strong>'+esc(d.name)+' · '+esc(d.category||"General")+'</strong><p>'+esc(d.description||"")+'</p><p>'+esc(d.recommendations||"")+'</p><button type="button" class="report-action secondary no-print" data-delete-disease="'+esc(d.id)+'">Eliminar</button></div>').join(""):'<p class="report-muted">Todavía no hay enfermedades registradas.</p>';
- $("#recordList").innerHTML=records.slice(0,8).map(r=>{const p=patients.find(x=>String(x.id)===String(r.patient_id));return '<div class="recommendation"><strong>'+esc(p?.full_name||"Paciente")+'</strong><p>'+esc(r.summary||"Sin resumen")+'</p><small class="report-small">'+esc(r.created_at?new Date(r.created_at).toLocaleString("es-MX"):"")+'</small></div>';}).join("")||'<p class="report-muted">Todavía no hay expedientes.</p>';
- $("#planList").innerHTML=plans.slice(0,8).map(p=>{const person=patients.find(x=>String(x.id)===String(p.patient_id));return '<div class="recommendation"><strong>'+esc(p.title||"Plan nutricional")+'</strong><p>'+esc(person?.full_name||"Paciente")+' · '+esc(p.status||"pending")+'</p></div>';}).join("")||'<p class="report-muted">Todavía no hay planes nutricionales.</p>';
+ $("#recordList").innerHTML=records.slice(0,8).map(r=>{const p=patients.find(x=>String(x.id)===String(r.patient_id));return '<div class="recommendation"><strong>'+esc(p?.full_name||"Paciente")+'</strong><p>'+esc(r.summary||"Sin resumen")+'</p><small class="report-small">'+esc(r.created_at?new Date(r.created_at).toLocaleString("es-MX"):"")+'</small><br><button type="button" class="report-action secondary no-print" data-delete-record="'+esc(r.id)+'">Eliminar expediente</button></div>';}).join("")||'<p class="report-muted">Todavía no hay expedientes.</p>';
+ $("#planList").innerHTML=plans.slice(0,8).map(p=>{const person=patients.find(x=>String(x.id)===String(p.patient_id));return '<div class="recommendation"><strong>'+esc(p.title||"Plan nutricional")+'</strong><p>'+esc(person?.full_name||"Paciente")+'</p><label>Estado <select data-plan-status="'+esc(p.id)+'"><option value="pending" '+(p.status==="pending"?"selected":"")+'>Pendiente</option><option value="authorized" '+(p.status==="authorized"?"selected":"")+'>Autorizado</option><option value="denied" '+(p.status==="denied"?"selected":"")+'>Denegado</option></select></label> <button type="button" class="report-action secondary no-print" data-delete-plan="'+esc(p.id)+'">Eliminar plan</button></div>';}).join("")||'<p class="report-muted">Todavía no hay planes nutricionales.</p>';
  renderRecommendations();
 }
 function renderRecommendations(){
@@ -80,6 +80,23 @@ $("#linkDiseaseForm").addEventListener("submit",async e=>{
  e.preventDefault();const patientId=$("#patientSelect").value, diseaseId=$("#diseaseSelect").value;if(!patientId||!diseaseId){msg("Selecciona paciente y enfermedad.",true);return;}
  try{const {error}=await db.from("patient_diseases").insert({patient_id:patientId,disease_id:diseaseId});if(error){if(error.code==="23505")throw new Error("Esta enfermedad ya está vinculada al paciente.");throw error;}await load();$("#patientSelect").value=patientId;renderRecommendations();msg("Enfermedad vinculada al paciente.");}
  catch(err){msg("No se pudo vincular la enfermedad: "+err.message,true);}
+});
+$("#recentPatients").addEventListener("click",async e=>{
+ const b=e.target.closest("[data-delete-patient]");if(!b)return;
+ if(!confirm("¿Eliminar este paciente y sus expedientes, planes y vínculos asociados?"))return;
+ try{const {error}=await db.from("patients").delete().eq("id",b.dataset.deletePatient);if(error)throw error;await load();msg("Paciente y registros asociados eliminados.");}catch(err){msg("No se pudo eliminar el paciente: "+err.message,true);}
+});
+$("#recordList").addEventListener("click",async e=>{
+ const b=e.target.closest("[data-delete-record]");if(!b)return;if(!confirm("¿Eliminar este expediente?"))return;
+ try{const {error}=await db.from("medical_records").delete().eq("id",b.dataset.deleteRecord);if(error)throw error;await load();msg("Expediente eliminado.");}catch(err){msg("No se pudo eliminar el expediente: "+err.message,true);}
+});
+$("#planList").addEventListener("click",async e=>{
+ const b=e.target.closest("[data-delete-plan]");if(!b)return;if(!confirm("¿Eliminar este plan nutricional?"))return;
+ try{const {error}=await db.from("nutrition_plans").delete().eq("id",b.dataset.deletePlan);if(error)throw error;await load();msg("Plan eliminado.");}catch(err){msg("No se pudo eliminar el plan: "+err.message,true);}
+});
+$("#planList").addEventListener("change",async e=>{
+ const s=e.target.closest("[data-plan-status]");if(!s)return;
+ try{const {error}=await db.from("nutrition_plans").update({status:s.value}).eq("id",s.dataset.planStatus);if(error)throw error;await load();msg("Estado del plan actualizado.");}catch(err){msg("No se pudo actualizar el plan: "+err.message,true);}
 });
 $("#diseaseList").addEventListener("click",async e=>{
  const b=e.target.closest("[data-delete-disease]");if(!b)return;const id=b.dataset.deleteDisease;if(!confirm("¿Eliminar esta enfermedad del catálogo?"))return;
