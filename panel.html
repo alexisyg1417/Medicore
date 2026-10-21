@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="MediCore">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icons/medicore-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./panel.css?v=orange3">
+  <link rel="stylesheet" href="./panel.css?v=auth-password-20261021">
   <!-- Los estilos del panel se mantienen centralizados en panel.css para evitar duplicados. -->
   <title>Panel de control | MediCore</title>
 </head>
@@ -34,21 +34,31 @@
         <div class="auth-orb auth-orb-one"></div><div class="auth-orb auth-orb-two"></div>
       </div>
       <div class="auth-form-side">
-        <form id="authForm" class="auth-card">
+<form id="authForm" class="auth-card">
           <div class="auth-mobile-brand brand"><span class="brand-mark">+</span><span>MediCore<small>GESTIÓN CLÍNICA</small></span></div>
-          <p class="eyebrow">BIENVENIDO DE NUEVO</p>
-          <h1 id="authTitle">Accede a tu cuenta</h1>
-          <p class="auth-intro">Te enviaremos un enlace seguro a tu correo para iniciar sesión o crear tu cuenta.</p>
+          <p class="eyebrow">TU ESPACIO DE TRABAJO</p>
+          <h1 id="authTitle">Inicia sesión</h1>
+          <p id="authIntro" class="auth-intro">Accede a tu agenda, notificaciones y reportes privados.</p>
+          <div id="authNameField" hidden>
+            <label for="authFullName">Nombre completo</label>
+            <div class="auth-input-wrap"><span aria-hidden="true">♙</span><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Tu nombre"></div>
+          </div>
           <label for="authEmail">Correo electrónico</label>
           <div class="auth-input-wrap"><span aria-hidden="true">✉</span><input id="authEmail" type="email" autocomplete="email" placeholder="nombre@correo.com" required></div>
-          <label for="authFullName">Nombre completo <span class="optional-label">Opcional si ya tienes cuenta</span></label>
-          <div class="auth-input-wrap"><span aria-hidden="true">♙</span><input id="authFullName" autocomplete="name" maxlength="120" placeholder="Tu nombre"></div>
-          <button id="authSubmit" class="primary-button auth-submit" type="submit"><span>Enviar enlace de acceso</span><span aria-hidden="true">→</span></button>
-          <p class="auth-secure-note"><span aria-hidden="true">✓</span> No necesitas contraseña. El enlace se envía a tu correo.</p>
+          <div id="authPasswordField">
+            <label for="authPassword">Contraseña</label>
+            <div class="auth-input-wrap"><span aria-hidden="true">🔒</span><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres" required></div>
+          </div>
+          <button id="authSubmit" class="primary-button auth-submit" type="submit"><span>Iniciar sesión</span><span aria-hidden="true">→</span></button>
+          <div class="auth-mode-links">
+            <button id="showSignUp" type="button">Crear una cuenta</button>
+            <button id="showSignIn" type="button" hidden>Ya tengo cuenta</button>
+            <button id="showReset" type="button">Olvidé mi contraseña</button>
+          </div>
           <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
-          <div class="auth-divider"><span></span><small>ACCESO SEGURO</small><span></span></div>
+          <div class="auth-divider"><span></span><small>ACCESO PROTEGIDO</small><span></span></div>
           <a class="back-link auth-back" href="./index.html">← Volver al sitio principal</a>
-          <p class="auth-legal">Versión de demostración · Evita introducir datos médicos reales.</p>
+          <p class="auth-legal">Demo académica. No introduzcas datos médicos reales.</p>
         </form>
       </div>
     </div>
