@@ -56,3 +56,19 @@ El esquema se encuentra en `supabase/schema.sql`. La base de datos ya cuenta con
 ## Importante
 
 MediCore es una demostración académica, no un sistema clínico certificado. Utiliza solamente datos ficticios: no registres expedientes, diagnósticos ni información médica real. Las notificaciones del navegador dependen del permiso y del soporte del dispositivo; no equivalen a un servicio push garantizado cuando la aplicación está cerrada.
+
+
+## Registro, inicio de sesión y base de datos (Supabase)
+
+MediCore incluye registro por correo y contraseña, inicio de sesión, cierre de sesión y recuperación de contraseña. Las cuentas utilizan Supabase Auth; las tablas privadas están protegidas con Row Level Security (RLS) y cada usuario solo puede consultar sus propios registros.
+
+### Configuración obligatoria del proyecto Supabase
+
+1. Abre el proyecto Supabase que corresponde a MediCore y entra en **SQL Editor**.
+2. Ejecuta el archivo completo [`supabase/medicore-schema.sql`](./supabase/medicore-schema.sql). Crea las tablas de agenda, notificaciones, pacientes, expedientes, planes, catálogo de enfermedades y citas ficticias.
+3. En **Authentication → URL Configuration**, agrega la URL de producción de MediCore a los sitios permitidos y a las URLs de redirección para confirmación y recuperación de contraseña.
+4. En **Authentication → Providers → Email**, habilita Email. Si la confirmación está activa, el usuario debe confirmar su correo antes de iniciar sesión.
+5. En `supabase-config.js` verifica que la URL del proyecto y la publishable key correspondan al MISMO proyecto. Nunca coloques una `service_role` o una clave secreta en el frontend.
+6. Prueba: crea una cuenta, confirma el correo si se solicita, inicia sesión, crea una cita ficticia, cierra sesión y vuelve a entrar para comprobar que los datos persisten. Prueba también el restablecimiento de contraseña.
+
+**Importante:** el esquema SQL está versionado en el repositorio, pero debe ejecutarse en el SQL Editor del proyecto Supabase correcto para que existan las tablas. La clave pública no puede crear tablas ni cambiar políticas. La demo pública usa una tabla separada y solo admite datos ficticios; nunca debe utilizarse para información clínica real.
