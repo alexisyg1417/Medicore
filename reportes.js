@@ -2,7 +2,8 @@
 "use strict";
 const $ = s => document.querySelector(s);
 const cfg = window.MEDICORE_SUPABASE_CONFIG;
-const db = window.medicoreSupabase || (window.supabase?.createClient && cfg?.url && cfg?.publishableKey ? window.supabase.createClient(cfg.url,cfg.publishableKey) : null);
+const db = window.medicoreSupabase || (window.supabase?.createClient && cfg?.url && cfg?.publishableKey ? window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}) : null);
+if(db && !window.medicoreSupabase) window.medicoreSupabase = db;
 let patients=[], diseases=[], plans=[], records=[], links=[], plansChart=null, bmiChart=null, loading=false;
 const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const msg = (t, bad=false) => { $("#reportMessage").textContent=t; $("#reportMessage").style.background=bad?"#fff0f0":"#fff6ed"; };
@@ -59,22 +60,22 @@ async function load(){
 }
 $("#patientSelect").addEventListener("change",renderRecommendations);
 $("#patientForm").addEventListener("submit",async e=>{
- e.preventDefault();const f=new FormData(e.currentTarget);const name=String(f.get("full_name")||"").trim();if(!name){msg("Escribe el nombre ficticio del paciente.",true);return;}
+ e.preventDefault();const form=e.currentTarget;const f=new FormData(form);const name=String(f.get("full_name")||"").trim();if(!name){msg("Escribe el nombre ficticio del paciente.",true);return;}
  const row={full_name:name,sex:String(f.get("sex")||"unspecified")};
  if(f.get("birth_date"))row.birth_date=String(f.get("birth_date"));
  if(f.get("height_m"))row.height_m=Number(f.get("height_m"));
  if(f.get("weight_kg"))row.weight_kg=Number(f.get("weight_kg"));
- try{const {error}=await db.from("patients").insert(row);if(error)throw error;e.currentTarget.reset();await load();msg("Paciente guardado correctamente en Supabase.");}
+ try{const {error}=await db.from("patients").insert(row);if(error)throw error;form.reset();await load();msg("Paciente guardado correctamente en Supabase.");}
  catch(err){msg("No se pudo registrar al paciente: "+err.message,true);}
 });
 $("#recordForm").addEventListener("submit",async e=>{
- e.preventDefault();const f=new FormData(e.currentTarget);try{const {error}=await db.from("medical_records").insert({patient_id:String(f.get("patient_id")),summary:String(f.get("summary")||"").trim()});if(error)throw error;e.currentTarget.reset();await load();msg("Expediente guardado correctamente.");}catch(err){msg("No se pudo guardar el expediente: "+err.message,true);}
+ e.preventDefault();const form=e.currentTarget;const f=new FormData(form);try{const {error}=await db.from("medical_records").insert({patient_id:String(f.get("patient_id")),summary:String(f.get("summary")||"").trim()});if(error)throw error;form.reset();await load();msg("Expediente guardado correctamente.");}catch(err){msg("No se pudo guardar el expediente: "+err.message,true);}
 });
 $("#planForm").addEventListener("submit",async e=>{
- e.preventDefault();const f=new FormData(e.currentTarget);try{const {error}=await db.from("nutrition_plans").insert({patient_id:String(f.get("patient_id")),title:String(f.get("title")||"").trim(),status:String(f.get("status")||"pending")});if(error)throw error;e.currentTarget.reset();await load();msg("Plan nutricional guardado correctamente.");}catch(err){msg("No se pudo guardar el plan: "+err.message,true);}
+ e.preventDefault();const form=e.currentTarget;const f=new FormData(form);try{const {error}=await db.from("nutrition_plans").insert({patient_id:String(f.get("patient_id")),title:String(f.get("title")||"").trim(),status:String(f.get("status")||"pending")});if(error)throw error;form.reset();await load();msg("Plan nutricional guardado correctamente.");}catch(err){msg("No se pudo guardar el plan: "+err.message,true);}
 });
 $("#diseaseForm").addEventListener("submit",async e=>{
- e.preventDefault();const f=new FormData(e.currentTarget);try{const {error}=await db.from("diseases").insert({name:String(f.get("name")||"").trim(),category:String(f.get("category")||"General").trim(),description:String(f.get("description")||"").trim(),recommendations:String(f.get("recommendations")||"").trim()});if(error)throw error;e.currentTarget.reset();await load();msg("Enfermedad guardada correctamente.");}catch(err){msg("No se pudo guardar la enfermedad: "+err.message,true);}
+ e.preventDefault();const form=e.currentTarget;const f=new FormData(form);try{const {error}=await db.from("diseases").insert({name:String(f.get("name")||"").trim(),category:String(f.get("category")||"General").trim(),description:String(f.get("description")||"").trim(),recommendations:String(f.get("recommendations")||"").trim()});if(error)throw error;form.reset();await load();msg("Enfermedad guardada correctamente.");}catch(err){msg("No se pudo guardar la enfermedad: "+err.message,true);}
 });
 $("#linkDiseaseForm").addEventListener("submit",async e=>{
  e.preventDefault();const patientId=$("#patientSelect").value, diseaseId=$("#diseaseSelect").value;if(!patientId||!diseaseId){msg("Selecciona paciente y enfermedad.",true);return;}
