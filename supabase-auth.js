@@ -9,9 +9,9 @@
     message.textContent = text;
     message.classList.toggle("success", ok);
   };
-  const showGate = () => { gate.hidden = false; shell.hidden = true; };
+  const showGate = () => { if (gate && shell) { gate.hidden = false; shell.hidden = true; } };
   const showApp = (user) => {
-    gate.hidden = true; shell.hidden = false;
+    if (gate && shell) { gate.hidden = true; shell.hidden = false; }
     const label = $("accountLabel");
     if (label) label.textContent = user?.email || "Cuenta";
     window.medicoreCurrentUser = user || null;
