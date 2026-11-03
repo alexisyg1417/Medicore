@@ -55,7 +55,7 @@ function createPushHandler({ env = process.env, sender, schedule = setTimeout } 
   async function deliver(job, sub) {
     try {
       job.status = 'sending';
-      const send = sender || require('web-push').sendNotification;
+      const send = sender || ((...args) => require('web-push').sendNotification(...args));
       const response = await send(sub, JSON.stringify({
         title: 'MediCore · Recordatorio', body: 'Tienes un recordatorio de prueba. Abre tu agenda.',
         url: './notificaciones.html', receipt: job.id
