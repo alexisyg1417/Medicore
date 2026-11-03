@@ -72,3 +72,24 @@ MediCore incluye registro por correo y contraseña, inicio de sesión, cierre de
 6. Prueba: crea una cuenta, confirma el correo si se solicita, inicia sesión, crea una cita ficticia, cierra sesión y vuelve a entrar para comprobar que los datos persisten. Prueba también el restablecimiento de contraseña.
 
 **Importante:** el esquema SQL está versionado en el repositorio, pero debe ejecutarse en el SQL Editor del proyecto Supabase correcto para que existan las tablas. La clave pública no puede crear tablas ni cambiar políticas. La demo pública usa una tabla separada y solo admite datos ficticios; nunca debe utilizarse para información clínica real.
+
+
+## Notificaciones push
+
+Abrir `notificaciones.html`: activar permiso, enviar ahora o enviar en 10 segundos.
+La prueba usa Push API + VAPID + web-push; `demo.js` conserva su prueba local.
+Railway ejecuta el backend. GitHub Pages llama al origen Railway indicado en el cliente.
+
+Variables del servicio: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `PUSH_TOKEN_SECRET`,
+`PUBLIC_ORIGIN`, `PUSH_ALLOWED_ORIGINS` (orígenes HTTPS exactos separados por coma).
+No guardar claves privadas en el repositorio. Las claves VAPID deben mantenerse entre despliegues.
+
+La suscripción vive en el navegador. El backend devuelve una autorización firmada de una hora,
+limitada a esa suscripción. No hay broadcast ni información clínica. El envío tiene límites
+por endpoint y globales. Los resultados y la prueba diferida viven en memoria (una réplica);
+un reinicio elimina los resultados y puede cancelar la prueba diferida. Al recargar la pantalla
+se renueva la autorización. No es un programador persistente de recordatorios de pacientes.
+
+El estado accepted solo acredita aceptación del proveedor. received acredita que el service worker
+resolvió showNotification y envió un acuse; el sistema operativo puede ocultarlo por No molestar.
+Pruebas: `npm test`. Arranque: `npm install` y `npm start` con las variables configuradas.

@@ -1,10 +1,13 @@
 /* MediCore PWA — caché seguro del shell y respaldo sin conexión */
-const CACHE_NAME = "medicore-shell-v31";
+const CACHE_NAME = "medicore-shell-v32-push";
 const SCOPE_URL = self.registration.scope;
 
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./notificaciones.html",
+  "./notificaciones.css",
+  "./notificaciones.js",
   "./medicore-redesign.css",
   "./script.js",
   "./demo.html",
@@ -88,6 +91,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
+  if (new URL(request.url).pathname.startsWith("/api/")) return;
 
   const url = new URL(request.url);
   // No almacenar respuestas de Supabase, autenticación ni otros orígenes:
@@ -162,5 +166,37 @@ self.addEventListener("fetch", (event) => {
         headers: { "Content-Type": "text/plain; charset=utf-8" }
       });
     }
+  })());
+});
+
+// Web Push: independiente de la pestaña y de los avisos locales de demo.js.
+self.addEventListener('push', event => {
+  event.waitUntil((async () => {
+    let data = {};
+    try { data = event.data ? event.data.json() : {}; } catch (_) {}
+    await self.registration.showNotification(data.title || 'MediCore', {
+      body: data.body || 'Tienes un nuevo aviso.',
+      icon: toScopeURL('./icons/medicore-icon-192.png'),
+      badge: toScopeURL('./icons/medicore-icon-192.png'),
+      tag: 'medicore-push-test', data: {url:toScopeURL('./notificaciones.html')}
+    });
+    if (typeof data.receipt === 'string') {
+      const api = self.location.hostname.endsWith('github.io')
+        ? 'https://medicore-production-e034.up.railway.app' : self.location.origin;
+      try { await fetch(api+'/api/push/receipt', {
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({id:data.receipt})
+      }); } catch (_) { /* La notificación ya se procesó; el acuse es opcional. */ }
+    }
+  })());
+});
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil((async()=>{
+    const target = toScopeURL('./notificaciones.html');
+    const windows = await self.clients.matchAll({type:'window',includeUncontrolled:true});
+    const existing = windows.find(client => client.url === target);
+    if (existing) return existing.focus();
+    return self.clients.openWindow(target);
   })());
 });

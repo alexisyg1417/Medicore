@@ -4,10 +4,12 @@
   "private": true,
   "description": "Sitio informativo MediCore y Progressive Web App",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "web-push": "3.6.7"
   },
   "engines": {
     "node": ">=20"

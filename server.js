@@ -3,6 +3,8 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 
+const { createPushHandler } = require('./push-server');
+const handlePush = createPushHandler();
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 3000);
 const MIME = {
@@ -13,7 +15,8 @@ const MIME = {
   ".txt":"text/plain; charset=utf-8", ".xml":"application/xml; charset=utf-8"
 };
 const ROUTES = new Map([["/","index.html"],["/index","index.html"],["/demo","demo.html"],["/panel","panel.html"]]);
-const server = http.createServer((req,res) => {
+const server = http.createServer(async (req,res) => {
+  if (await handlePush(req,res)) return;
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname); }
   catch { res.writeHead(400); return res.end("Solicitud no válida"); }
@@ -23,6 +26,11 @@ const server = http.createServer((req,res) => {
   let relative = ROUTES.get(pathname) || pathname.replace(/^\/+/, "");
   if (!relative || relative.includes("\\") || relative.split("/").some(part => part === "." || part === "..")) {
     res.writeHead(400); return res.end("Ruta no válida");
+  }
+  // Solo archivos públicos; nunca servir código del servidor, tests o secretos.
+  const publicRoot = /^(?:index|demo|panel|reportes|notificaciones)\.html$|^(?:style|demo|panel|medicore-redesign|notificaciones)\.css$|^(?:script|demo|panel|reportes|notificaciones|supabase-config|supabase-auth|sw)\.js$|^manifest\.json$/;
+  if (!publicRoot.test(relative) && !/^icons\/[a-zA-Z0-9_.-]+\.(?:png|svg|ico)$/.test(relative)) {
+    res.writeHead(404); return res.end('No disponible');
   }
   const file = path.resolve(ROOT, relative);
   if (!file.startsWith(ROOT + path.sep) && file !== path.join(ROOT,"index.html")) {
